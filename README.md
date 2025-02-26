@@ -1,4 +1,5 @@
 # Gestión del equipo New Team
+## Datos del Grupo
 - Integrantes del Grupo: Aitor Aróstegui, Víctor Marín, Cristian Ortega y Nicolás Ortega.
 - Usuarios de Github: @Aitoraros, @aragorn7372, @Cristianortegaa, @nicolasorteg
 
