@@ -9,7 +9,8 @@ import java.time.LocalDate
     val fechaNacimiento:LocalDate,
     val fechaIncorporacion:LocalDate,
     val salario:Double,
-    val pais:String
+    val pais:String,
+
 ){
 
 }

@@ -4,18 +4,23 @@ import java.time.LocalDate
 import models.Persona
 
 class Entrenadores(
-    val rol:Rol,
     id:Long,
     nombre:String,
     apellidos:String,
     fechaNacimiento: LocalDate,
     fechaIncorporacion: LocalDate,
     salario:Double,
+    rol: Rol,
     pais:String,
-):Persona(id,nombre,apellidos,fechaNacimiento,fechaIncorporacion,salario,pais){
-
+    val especialidad:Especialidad
+):Persona(id,nombre,apellidos,fechaNacimiento,fechaIncorporacion,salario,pais,rol){
+    override fun toString(): String {
+        return "id: $id,nombre: $nombre,apellidos: $apellidos,fecha_nacimiento: $fechaNacimiento," +
+                "fecha_incorporacion: $fechaIncorporacion,salario: $salario,pais: $pais,rol: $rol," +
+                "especialidad: $especialidad}"
+    }
 
 }
-enum class Rol {
-PORTEROS,PRINCIPAL,ASISTENTE
+enum class Especialidad {
+    ENTRENADOR_PORTEROS,ENTRENADOR_ASISTENTE,ENTRENADOR_PRINCIPAL
 }
