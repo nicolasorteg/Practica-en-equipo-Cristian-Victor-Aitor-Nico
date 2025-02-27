@@ -3,6 +3,7 @@
 - Integrantes del Grupo: Aitor Aróstegui, Víctor Marín, Cristian Ortega y Nicolás Ortega.
 - Usuarios de Github: @Aitoraros, @aragorn7372, @Cristianortegaa, @nicolasorteg
 
+
 ## Enunciado
 El equipo New Team ha decido digitalizar su sistema de gestión de personal, que debe ser capaz de tratar la información de jugadores y entrenadores de manera eficiente.
 * Gestion de Personal: estructura base que pueda ser usada para representar a cualquier empleado del club. Se debe incluir: id único y gestionado por el sistema de almacenamiento, nombre, apellidos, fecha de nacimiento, fecha de incorporación al bluc, salario y país de origen.
@@ -20,6 +21,7 @@ Hay un menú con las siguientes opciones
 6. Realizar consultas indicadas.
 
 Además, en el servicio se incluyen consultas ejemplificativas para revisar que los datos se hayan tratado correctamente.
+
 
 
 
