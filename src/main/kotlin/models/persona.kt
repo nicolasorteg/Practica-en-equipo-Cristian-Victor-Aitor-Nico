@@ -9,8 +9,12 @@ import java.time.LocalDate
     val fechaNacimiento:LocalDate,
     val fechaIncorporacion:LocalDate,
     val salario:Double,
+<<<<<<< HEAD
     val pais:String,
 
+=======
+    val pais:String
+>>>>>>> c7dd6f7 (Corrección de errores.)
 ){
 
 }
