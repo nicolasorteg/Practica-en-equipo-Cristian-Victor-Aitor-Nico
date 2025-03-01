@@ -10,13 +10,12 @@ class Entrenadores(
     fechaNacimiento: LocalDate,
     fechaIncorporacion: LocalDate,
     salario:Double,
-    rol: Rol,
     pais:String,
     val especialidad:Especialidad
-):Persona(id,nombre,apellidos,fechaNacimiento,fechaIncorporacion,salario,pais,rol){
+):Persona(id,nombre,apellidos,fechaNacimiento,fechaIncorporacion,salario,pais){
     override fun toString(): String {
         return "id: $id,nombre: $nombre,apellidos: $apellidos,fecha_nacimiento: $fechaNacimiento," +
-                "fecha_incorporacion: $fechaIncorporacion,salario: $salario,pais: $pais,rol: $rol," +
+                "fecha_incorporacion: $fechaIncorporacion,salario: $salario,pais: $pais," +
                 "especialidad: $especialidad}"
     }
 

@@ -16,6 +16,7 @@ class CrudPersonasImplementation:CrudPersonas {
      * @return lista con personas
      */
     override fun getAll(): List<Persona> {
+        logger.info { "obteniendo todos las personas UwU" }
         return personas.values.toList()
     }
 
@@ -25,6 +26,7 @@ class CrudPersonasImplementation:CrudPersonas {
      * @return Persona encontrada o nulo si no se encuentra
      */
     override fun getById(id: Long): Persona? {
+        logger.info { "obteniendo persona" }
         return personas[id]
     }
 
@@ -35,6 +37,7 @@ class CrudPersonasImplementation:CrudPersonas {
      * @return devuelve la persona actualizada o nulo si no se encuentra
      */
     override fun update(objeto: Persona, id: Long): Persona? {
+        logger.info { "actualizando persona" }
         val personaNueva: Persona = if (objeto is Jugadores) {
             jugadorCopy(objeto, id)
         } else {
@@ -50,6 +53,7 @@ class CrudPersonasImplementation:CrudPersonas {
      * @return devuelve nulo si no se encuentra o la persona si se encuentra
      */
     override fun delete(id: Long): Persona? {
+        logger.info { "eliminando persona" }
         return personas.remove(id)
     }
 
@@ -59,6 +63,7 @@ class CrudPersonasImplementation:CrudPersonas {
      * @return devuelve el objeto guardado
      */
     override fun save(objeto: Persona): Persona {
+        logger.info { "guardando persona" }
         val personaNueva: Persona
         val id = personas.keys.maxOrNull()?.plus(1) ?: 1
         personaNueva = if (objeto is Jugadores) {
@@ -77,8 +82,8 @@ class CrudPersonasImplementation:CrudPersonas {
      * @return devuelve el entrenador actualizado
      */
     private fun entrenadorCopy(persona: Entrenadores, id: Long): Entrenadores {
+        logger.debug { "copiando entrenador" }
         val entrenador=Entrenadores(
-            persona.rol,
             id,
             persona.nombre,
             persona.apellidos,
@@ -86,6 +91,7 @@ class CrudPersonasImplementation:CrudPersonas {
             persona.fechaIncorporacion,
             persona.salario,
             persona.pais,
+            persona.especialidad
         )
         return entrenador
     }
@@ -97,6 +103,7 @@ class CrudPersonasImplementation:CrudPersonas {
      * @return devuelve el entrenador actualizado
      */
     private fun jugadorCopy(persona: Jugadores, id: Long): Jugadores {
+       logger.debug { "copiando jugador" }
         val jugador = Jugadores(
             id,
             persona.nombre,
@@ -105,7 +112,6 @@ class CrudPersonasImplementation:CrudPersonas {
             persona.fechaIncorporacion,
             persona.salario,
             persona.pais,
-            persona.especialidad,
             persona.posicion,
             persona.dorsal,
             persona.altura,
