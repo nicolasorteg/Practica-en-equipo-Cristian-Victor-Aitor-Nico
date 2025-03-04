@@ -1,5 +1,7 @@
 package consultas
 
-fun Services.Consultas(){
+import services.PersonaServiceImplementation
+
+fun PersonaServiceImplementation.consultas(){
 
 }

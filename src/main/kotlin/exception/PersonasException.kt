@@ -7,7 +7,7 @@ sealed class PersonasException(message: String) : Exception(message) {
 
     class PersonasStorageExcepcion(message: String) : PersonasException(message)
 
-    class PersonaNotFoundException(id: Int) : PersonasException("Persona no encontrada con id: $id")
+    class PersonaNotFoundException(id: Any) : PersonasException("Persona no encontrada con id: $id")
     class PersonaInvalidoException(message: String) : PersonasException("Persona no válida: $message")
 
 }

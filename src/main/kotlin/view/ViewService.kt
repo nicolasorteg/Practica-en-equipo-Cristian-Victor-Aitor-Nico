@@ -1,11 +1,18 @@
 package view
 
+import cache.Cache
+import services.PersonaServiceImplementation
+import consultas.consultas
+import models.Persona
+import repository.CrudPersonasImplementation
 import java.io.File
 
 class ViewService(
-    val files: List<File>,
+    val files: List<String>,
+    private val cache: Cache<Long, Persona>,
+    private val repositorio:CrudPersonasImplementation
 ) {
-    val controller=Services()
+    val controller=PersonaServiceImplementation(repositorio, cache)
     fun menu(){
         var salir = false
         while (!salir) {
