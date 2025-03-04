@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "2.1.0"
+    id("org.jetbrains.dokka") version "1.9.20"
 }
 
 group = ""
@@ -11,16 +12,16 @@ repositories {
 
 dependencies {
 
-    /*librerias para el logger*/
+    // librerías para el logger
     implementation("org.lighthousegames:logging:1.5.0")
     implementation("ch.qos.logback:logback-classic:1.5.12")
-    //librerias para la lectura de datos JSON
+    // librerías para la lectura de datos JSON
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
-    //librerias para lectura de datos XML
+    // librerias para lectura de datos XML
     implementation("io.github.pdvrieze.xmlutil:serialization-jvm:0.90.3")
-    //mock
+    // mock
     testImplementation("io.mockk:mockk:1.13.16")
-    //test normales
+    // test normales
     testImplementation(kotlin("test"))
 }
 
