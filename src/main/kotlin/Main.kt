@@ -1,3 +1,9 @@
+import models.Entrenadores
+import models.Jugadores
+
+val jugadores = mutableListOf<Jugadores>()
+val entrenadores = mutableListOf<Entrenadores>()
+
 fun main() {
     var salir = false
     while (!salir) {
@@ -11,7 +17,7 @@ fun main() {
         println("7. Salir")
         print("Seleccione una opción: ")
 
-        when (readlnOrNull()?.toIntOrNull()) {
+        when (readln().toIntOrNull()) {
             1 -> cargarDatosDesdeFichero()
             2 -> crearMiembro()
             3 -> actualizarMiembro()
@@ -78,4 +84,25 @@ fun realizarConsultas() {
     println("27. Jugadores agrupados por década de nacimiento, y dentro de cada grupo, el promedio de partidos jugados")
     println("28. Salario promedio de los jugadores agrupados por su país de origen, y dentro de cada grupo, el jugador con el salario más bajo y alto")
     print("Seleccione una consulta: ")
+
+
+    when (readlnOrNull()?.toIntOrNull()) {
+        1 -> println(jugadores + entrenadores)
+        2 -> println(jugadores.filter { it.posicion == "DELANTERO" }.maxByOrNull { it.altura })
+        3 -> println(jugadores.filter { it.posicion == "DELANTERO" }.map { it.goles }.average())
+        4 -> println(jugadores.filter { it.posicion == "DEFENSA" }.maxByOrNull { it.partidosJugados })
+        5 -> println(jugadores.groupBy { it.pais })
+        6 -> println(entrenadores.maxByOrNull { it.salario })
+        7 -> println(jugadores.groupBy { it.posicion })
+        8 -> println(jugadores.filter { it.goles > 10 })
+        9 -> {
+            val salarioPromedio = jugadores.map { it.salario }.average()
+            println(jugadores.filter { it.salario > salarioPromedio })
+        }
+        10 -> println(jugadores.sumOf { it.partidosJugados })
+        11 -> println(jugadores.groupBy { it.fechaIncorporacion.year })
+        12 -> println(entrenadores.groupBy { it.rol })
+        13 -> println(jugadores.minByOrNull { it.fechaNacimiento })
+        14 -> println()
+    }
 }
