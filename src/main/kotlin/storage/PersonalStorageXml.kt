@@ -2,7 +2,7 @@ package storage
 
 import dto.EntrenadorDto
 import dto.JugadorDto
-import exception.PersonasExcepcion
+import exception.PersonasException
 import models.Persona
 import mappers.PersonaMapper
 import models.Entrenadores
@@ -31,7 +31,7 @@ class PersonalStorageXml {
      * Lee las personas desde un archivo XML.
      * @param file El archivo XML desde el que se leerán las personas.
      * @return Lista de personas (Jugadores o Entrenadores).
-     * @throws PersonasExcepcion.PersonasStorageExcepcion Si el archivo no existe, no es un archivo o no se puede leer.
+     * @throws PersonasException.PersonasStorageExcepcion Si el archivo no existe, no es un archivo o no se puede leer.
      */
     fun readFromFile(file: File): List<Persona> {
         logger.debug { "Leyendo personas de fichero XML: $file" }
@@ -39,7 +39,7 @@ class PersonalStorageXml {
         // Verificar que el archivo sea válido
         if (!file.exists() || !file.isFile || !file.canRead() || file.length() == 0L || !file.name.endsWith(".xml")) {
             logger.error { "El fichero no existe, o no es un fichero o no se puede leer: $file" }
-            throw PersonasExcepcion.PersonasStorageExcepcion("El fichero no existe, o no es un fichero o no se puede leer: $file")
+            throw PersonasException.PersonasStorageExcepcion("El fichero no existe, o no es un fichero o no se puede leer: $file")
         }
 
         // Leer el archivo XML
@@ -87,7 +87,7 @@ class PersonalStorageXml {
      * Escribe las personas en un archivo XML.
      * @param personas La lista de personas (Jugadores o Entrenadores) que se escribirán.
      * @param file El archivo XML donde se guardarán las personas.
-     * @throws PersonasExcepcion.PersonasStorageExcepcion Si el directorio no existe o no es válido.
+     * @throws PersonasException.PersonasStorageExcepcion Si el directorio no existe o no es válido.
      */
     fun writeToFile(personas: List<Persona>, file: File) {
         logger.debug { "Escribiendo personas en fichero XML: $file" }
@@ -95,7 +95,7 @@ class PersonalStorageXml {
         // Verificar que el archivo sea válido
         if (!file.parentFile.exists() || !file.parentFile.isDirectory || !file.name.endsWith(".xml")) {
             logger.error { "El directorio padre del fichero no existe: ${file.parentFile.absolutePath}" }
-            throw PersonasExcepcion.PersonasStorageExcepcion("El directorio padre del fichero no existe: ${file.parentFile.absolutePath}")
+            throw PersonasException.PersonasStorageExcepcion("El directorio padre del fichero no existe: ${file.parentFile.absolutePath}")
         }
 
         // Convertir las personas a DTOs

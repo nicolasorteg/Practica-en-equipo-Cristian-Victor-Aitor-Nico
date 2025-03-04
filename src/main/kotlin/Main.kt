@@ -1,5 +1,6 @@
 import models.Entrenadores
 import models.Jugadores
+import models.Posicion
 
 val jugadores = mutableListOf<Jugadores>()
 val entrenadores = mutableListOf<Entrenadores>()
@@ -88,9 +89,9 @@ fun realizarConsultas() {
 
     when (readlnOrNull()?.toIntOrNull()) {
         1 -> println(jugadores + entrenadores)
-        2 -> println(jugadores.filter { it.posicion == "DELANTERO" }.maxByOrNull { it.altura })
-        3 -> println(jugadores.filter { it.posicion == "DELANTERO" }.map { it.goles }.average())
-        4 -> println(jugadores.filter { it.posicion == "DEFENSA" }.maxByOrNull { it.partidosJugados })
+        2 -> println(jugadores.filter { it.posicion == Posicion.DELANTERO }.maxByOrNull { it.altura })
+        3 -> println(jugadores.filter { it.posicion == Posicion.DELANTERO }.map { it.goles }.average())
+        4 -> println(jugadores.filter { it.posicion == Posicion.DEFENSA}.maxByOrNull { it.partidosJugados })
         5 -> println(jugadores.groupBy { it.pais })
         6 -> println(entrenadores.maxByOrNull { it.salario })
         7 -> println(jugadores.groupBy { it.posicion })
@@ -101,7 +102,7 @@ fun realizarConsultas() {
         }
         10 -> println(jugadores.sumOf { it.partidosJugados })
         11 -> println(jugadores.groupBy { it.fechaIncorporacion.year })
-        12 -> println(entrenadores.groupBy { it.rol })
+        12 -> println(entrenadores.groupBy { it.especialidad })
         13 -> println(jugadores.minByOrNull { it.fechaNacimiento })
         14 -> println()
     }

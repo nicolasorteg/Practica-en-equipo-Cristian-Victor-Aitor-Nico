@@ -20,8 +20,8 @@ class Jugadores(
 ):Persona(id, nombre, apellidos, fechaNacimiento, fechaIncorporacion, salario, pais){
     override fun toString(): String {
         return "id: $id,nombre: $nombre,apellidos: $apellidos,fecha_nacimiento: $fechaNacimiento," +
-                "fecha_incorporacion: $fechaIncorporacion,salario: $salario,pais: $pais," +
-                "posicion: $posicion,dorsal: $dorsal,altura: $altura,peso: $peso,goles: $goles," +
+                "fecha_incorporación: $fechaIncorporacion,salario: $salario,pais: $pais," +
+                "posición: $posicion,dorsal: $dorsal,altura: $altura,peso: $peso,goles: $goles," +
                 "partidos_jugados: $partidosJugados"
     }
 }
