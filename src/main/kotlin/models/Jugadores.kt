@@ -1,8 +1,9 @@
+
 package models
 
 import java.time.LocalDate
 import models.Persona
- class Jugadores(
+class Jugadores(
     id:Long,
     nombre:String,
     apellidos:String,
@@ -26,5 +27,5 @@ import models.Persona
 }
 
 enum class Posicion {
-DELANTERO,CENTROCAMPISTA,PORTERO,DEFENSA
+    DELANTERO,CENTROCAMPISTA,PORTERO,DEFENSA
 }
