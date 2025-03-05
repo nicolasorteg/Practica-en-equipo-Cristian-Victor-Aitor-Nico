@@ -25,17 +25,17 @@ object Config {
         val propertiesStream=this.javaClass.classLoader.getResourceAsStream("config.properties")
             ?: throw FileNotFoundException("config.properties")
         properties.load(propertiesStream)
-        //crea las constantes en base al archivo properties para crear el objeto configuración
-        val strindate:String = properties.getProperty("local.time")?:"en_EN"
+        //crea las constantes basándonos en el archivo properties para crear el objeto configuración
+        val stringDateConf:String = properties.getProperty("local.time")?:"en_EN"
         val directorioUsado=System.getProperty("user.dir")
         val dataDirPropiedad=properties.getProperty("data.directory")?: "resources"
         val backupDirPropiedad=properties.getProperty("backup.directory")?: "data"
         val readFile=properties.getProperty("data.file")?: "data/personal.csv"
-        val tipoFile=properties.getProperty("backup.Tipo").uppercase(Locale.getDefault()).toTipo()?: Tipo.CSV
+        val tipoFile= properties.getProperty("backup.Tipo")?.uppercase(Locale.getDefault())?.toTipo() ?:Tipo.CSV
         val dataDir= Path.of(directorioUsado,dataDirPropiedad).pathString
         val backupDir=Path.of(directorioUsado,backupDirPropiedad).pathString
         crearDirectorios(dataDir,backupDir)
-        return ConfiguracionProperties(dataDir,backupDir,tipoFile,readFile)
+        return ConfiguracionProperties(dataDir,backupDir,tipoFile,readFile,stringDateConf)
 
     }
 
@@ -50,4 +50,4 @@ object Config {
             data.mkdir()
         }
     }
-}data class ConfiguracionProperties(val dataDir: String = "resources", val backupDir: String = "data", val tipo: Tipo =Tipo.CSV, val file: String ="personal.json", val LocalTime:String)
+}data class ConfiguracionProperties(val dataDir: String = "resources", val backupDir: String = "data", val tipo: Tipo =Tipo.CSV, val file: String ="personal.json", val localTime:String)

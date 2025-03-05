@@ -4,6 +4,7 @@ import dto.EntrenadorDto
 import dto.JugadorDto
 import dto.PersonaDto
 import models.*
+import java.time.LocalDate
 
 /**
  * Clase Mapper que se encarga de convertir entre el modelo Jugador y el DTO JugadorDto.
@@ -25,8 +26,8 @@ class PersonaMapper {
             id = jugador.id,
             nombre = jugador.nombre,
             apellidos = jugador.apellidos,
-            fechaNacimiento = jugador.fechaNacimiento,
-            fechaIncorporacion = jugador.fechaIncorporacion,
+            fechaNacimiento = jugador.fechaNacimiento.toString(),
+            fechaIncorporacion = jugador.fechaIncorporacion.toString(),
             salario = jugador.salario,
             pais = jugador.pais,
             posicion = jugador.posicion.name, // Usamos el valor del enum como String
@@ -44,8 +45,8 @@ class PersonaMapper {
             id = entrenador.id,
             nombre = entrenador.nombre,
             apellidos = entrenador.apellidos,
-            fechaNacimiento = entrenador.fechaNacimiento,
-            fechaIncorporacion = entrenador.fechaIncorporacion,
+            fechaNacimiento = entrenador.fechaNacimiento.toString(),
+            fechaIncorporacion = entrenador.fechaIncorporacion.toString(),
             salario = entrenador.salario,
             pais = entrenador.pais,
             especialidad = entrenador.especialidad.name // Usamos el valor del enum como String
@@ -58,8 +59,8 @@ class PersonaMapper {
             id = jugadorDto.id,
             nombre = jugadorDto.nombre,
             apellidos = jugadorDto.apellidos,
-            fechaNacimiento = jugadorDto.fechaNacimiento,
-            fechaIncorporacion = jugadorDto.fechaIncorporacion,
+            fechaNacimiento = jugadorDto.fechaNacimiento.toLocalDate(),
+            fechaIncorporacion = jugadorDto.fechaIncorporacion.toLocalDate(),
             salario = jugadorDto.salario,
             pais = jugadorDto.pais,
             posicion = Posicion.valueOf(jugadorDto.posicion), // Convertimos el String a enum
@@ -78,10 +79,14 @@ class PersonaMapper {
             id = entrenadorDto.id,
             nombre = entrenadorDto.nombre,
             apellidos = entrenadorDto.apellidos,
-            fechaNacimiento = entrenadorDto.fechaNacimiento,
-            fechaIncorporacion = entrenadorDto.fechaIncorporacion,
+            fechaNacimiento = entrenadorDto.fechaNacimiento.toLocalDate(),
+            fechaIncorporacion = entrenadorDto.fechaIncorporacion.toLocalDate(),
             salario = entrenadorDto.salario,
             pais = entrenadorDto.pais
         )
     }
+}
+
+private fun String.toLocalDate(): LocalDate {
+    TODO()
 }
