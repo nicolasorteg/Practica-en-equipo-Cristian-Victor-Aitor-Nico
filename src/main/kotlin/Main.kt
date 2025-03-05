@@ -2,14 +2,15 @@ import models.Entrenadores
 import models.Jugadores
 import models.Posicion
 import view.ViewService
-import java.awt.List
+
+
+
 
 val jugadores = mutableListOf<Jugadores>()
 val entrenadores = mutableListOf<Entrenadores>()
 
-fun main(arg:Array<String>) {
-    val lista=arg.toList()
-    val view=ViewService(lista)
+fun main() {
+ val view=ViewService()
     view.menu()
 }
 

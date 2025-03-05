@@ -1,18 +1,21 @@
 package view
 
+import config.Config
 import cache.Cache
+import cache.CacheImplementationLru
 import services.PersonaServiceImplementation
-import consultas.consultas
+import utils.consultas
 import models.Persona
 import repository.CrudPersonasImplementation
-import java.io.File
+import java.nio.file.Path
+import java.util.*
 
-class ViewService(
-    val files: List<String>,
-    private val cache: Cache<Long, Persona>,
-    private val repositorio:CrudPersonasImplementation
-) {
-    val controller=PersonaServiceImplementation(repositorio, cache)
+class ViewService{
+    private val repositorio=CrudPersonasImplementation()
+    private val cache:Cache<Long,Persona> = CacheImplementationLru()
+    private val configuracion=Config.configProperties
+    private val controller=PersonaServiceImplementation(repositorio, cache)
+
     fun menu(){
         var salir = false
         while (!salir) {
@@ -41,26 +44,48 @@ class ViewService(
             }
         }
     }
-    fun cargarDatosDesdeFichero() {
+    private fun cargarDatosDesdeFichero() {
+        val productoFile= Path.of(configuracion.dataDir,configuracion.file)
+        controller.importarDatosDesdeFichero(productoFile)
+    }
+
+    private fun crearMiembro() {
+    TODO()
+    }
+
+    private fun actualizarMiembro() {
+        try {
+            val id=preguntarId()
+            val persona=controller.getByID(id)
+            //falta por finalizar
+        }catch (e:Exception){println(e.message)  }
+
 
     }
 
-    fun crearMiembro() {
-
+    private fun eliminarMiembro() {
+        val id=preguntarId()
+        controller.delete(id)
     }
 
-    fun actualizarMiembro() {
-
+    private fun preguntarId():Long {
+        println("introduce la id del jugador a eliminar")
+        var id:Long
+        do {
+             id=readln().toLongOrNull()?: 0
+            if (id<=0){
+               println("valor incorrecto no puede ser negativo, o distinto a un numero")
+            }
+        }while (id<=0)
+        return id
     }
 
-    fun eliminarMiembro() {
-
+    private fun copiarDatosAFichero() {
+        val exportFile= Path.of(configuracion.backupDir,"personal.${configuracion.tipo.toString()
+            .lowercase(Locale.getDefault())}")
+        controller.exportarDatosDesdeFichero(exportFile,configuracion.tipo)
     }
-
-    fun copiarDatosAFichero() {
-
-    }
-    fun realizarConsultas(){
+    private fun realizarConsultas(){
         controller.consultas()
     }
 }
