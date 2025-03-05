@@ -20,12 +20,14 @@ class PersonalStorageCsv: PersonalStorage {
 
     private val logger = logging() // creación del logger
 
+
+
     /**
      * Se encarga de leer un listado de personas facilitadas por un archivo de extensión .csv.
      *
      * @param file Este es el archivo CSV desde el cual se leen los datos.
      * @return Devuelve la lista de personas leídas del archivo.
-     * @throws PersonasStorageExcepcion Si el archivo no existe, no se puede leer, o tiene un formato incorrecto.
+     * @throws PersonasException.PersonasStorageException Si el archivo no existe, no se puede leer, o tiene un formato incorrecto.
      */
     override fun leerDelArchivo(file: File): List<Persona> {
         if (!file.isFile || !file.exists() || !file.canRead()) { // si no tiene un buen formato, no existe o no es puede leer
@@ -86,10 +88,10 @@ class PersonalStorageCsv: PersonalStorage {
      * Se encarga de escribir una lista de personas en un archivo CSV.
      *
      * @param file El archivo CSV donde escribir los datos.
-     * @param personas La lista de personas a escribir en el archivo.
-     * @throws PersonasStorageExcepcion Si el archivo no es válido o no se puede escribir.
+     * @param persona La lista de personas a escribir en el archivo.
+     * @throws PersonasException.PersonasStorageException Si el archivo no es válido o no se puede escribir.
      */
-    override fun escribirAUnArchivo(file: File, personas: List<Persona>) {
+    override fun escribirAUnArchivo(file: File, persona: List<Persona>) {
         logger.debug { "Escribiendo personas en el fichero CSV: $file" }
 
         // comprobación de si el archivo es válido
@@ -102,7 +104,7 @@ class PersonalStorageCsv: PersonalStorage {
         file.writeText("id,nombre,apellidos,fechaNacimiento,fechaIncorporacion,salario,pais,rol,extra1,extra2,extra3,extra4,extra5,extra6,extra7\n")
 
         // escritura de cada una de las personas en el archivo
-        personas.forEach { persona ->
+        persona.forEach { persona ->
             val csvRow = when (persona) {
                 is Entrenadores -> {
                     // extracción de los valores de la clase Entrenadores

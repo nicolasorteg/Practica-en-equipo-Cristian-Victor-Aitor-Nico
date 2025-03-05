@@ -35,7 +35,7 @@ object Config {
         val dataDir= Path.of(directorioUsado,dataDirPropiedad).pathString
         val backupDir=Path.of(directorioUsado,backupDirPropiedad).pathString
         crearDirectorios(dataDir,backupDir)
-        return ConfiguracionProperties(dataDir,backupDir,tipoFile,readFile)
+        return ConfiguracionProperties(dataDir,backupDir,tipoFile,  readFile)
 
     }
 
@@ -50,4 +50,4 @@ object Config {
             data.mkdir()
         }
     }
-}data class ConfiguracionProperties(val dataDir: String = "resources", val backupDir: String = "data", val tipo: Tipo =Tipo.CSV, val file: String ="personal.json", val LocalTime:String)
+}data class ConfiguracionProperties(val dataDir: String = "resources", val backupDir: String = "data", val tipo: Tipo =Tipo.CSV, val file: String ="personal.json", val LocalTime:String = "00:00:00")

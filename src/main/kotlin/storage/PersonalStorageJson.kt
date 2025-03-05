@@ -24,12 +24,13 @@ class PersonalStorageJson : PersonalStorage {
     // Instancia del Mapper que se encarga de la conversión entre modelos y DTOs
     private val personaMapper = PersonaMapper()
 
+
     /**
      * Esta función lee las personas de un archivo JSON y las devuelve como una lista de objetos Persona.
      *
      * @param file Este es el archivo JSON desde el cual se leen los datos.
      * @return Devuelve la lista de personas leídas del archivo.
-     * @throws PersonasStorageException Si el archivo no existe, no se puede leer, o tiene un formato incorrecto.
+     * @throws PersonasException.PersonasStorageException Si el archivo no existe, no se puede leer, o tiene un formato incorrecto.
      */
     override fun leerDelArchivo (file:File): List<Persona> {
 
@@ -93,6 +94,7 @@ class PersonalStorageJson : PersonalStorage {
                         pais = json["pais"] ?: "",
                         especialidad = json["especialidad"] ?: ""
                     )
+
                     // conversión del DTO a modelo y se agrega a la lista
                     personas.add(personaMapper.toModel(entrenadorDto))
                 }
@@ -109,8 +111,8 @@ class PersonalStorageJson : PersonalStorage {
      * Se encarga de escribir una lista de personas en un archivo JSON.
      *
      * @param file El archivo JSON donde escribir los datos.
-     * @param personas La lista de personas a escribir en el archivo.
-     * @throws PersonasStorageExcepcion Si el archivo no es válido o no se puede escribir.
+     * @param persona La lista de personas a escribir en el archivo.
+     * @throws PersonasException.PersonasStorageException Si el archivo no es válido o no se puede escribir.
      */
     override fun escribirAUnArchivo (file: File, persona: List<Persona>) {
         // mensaje de debug para la escritura del archivo

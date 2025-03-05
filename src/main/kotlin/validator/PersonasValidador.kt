@@ -3,7 +3,6 @@ package validator
 import models.Jugadores
 import models.Persona
 import org.lighthousegames.logging.logging
-import exception.PersonasException
 
 /**
  * revisa si los datos introducidos en Persona{Jugadores/Entrenadores} son corrector
