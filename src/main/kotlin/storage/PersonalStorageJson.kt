@@ -56,7 +56,7 @@ class PersonalStorageJson : PersonalStorage {
                 .associate { it[0].trim().removeSurrounding("\"") to it[1].trim().removeSurrounding("\"") }
 
             // dependiendo del rol de cada persona, se crea el DTO correspondiente
-            when (json["tipo"]) {
+            when (json["rol"]) {
                 "Jugador" -> {
                     // creación el DTO de Jugador
                     val jugadorDto = JugadorDto(

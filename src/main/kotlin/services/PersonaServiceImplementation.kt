@@ -59,7 +59,7 @@ class PersonaServiceImplementation(
     override fun importarDatosDesdeFichero(fichero: Path) {
         logger.info { "Seleccionando tipo" }
         val texto=fichero.name.split(".")
-        when(texto[2]){
+        when(texto[1]){
             "csv"->{
                 val lista=storageCsv.leerDelArchivo(fichero.toFile())
                 lista.forEach{repositorio.save(it)}

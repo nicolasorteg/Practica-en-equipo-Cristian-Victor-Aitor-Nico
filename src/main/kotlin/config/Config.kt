@@ -26,10 +26,11 @@ object Config {
             ?: throw FileNotFoundException("config.properties")
         properties.load(propertiesStream)
         //crea las constantes en base al archivo properties para crear el objeto configuración
+        val strindate:String = properties.getProperty("local.time")?:"en_EN"
         val directorioUsado=System.getProperty("user.dir")
         val dataDirPropiedad=properties.getProperty("data.directory")?: "resources"
         val backupDirPropiedad=properties.getProperty("backup.directory")?: "data"
-        val readFile=properties.getProperty("data.file")?: "personal.csv"
+        val readFile=properties.getProperty("data.file")?: "data/personal.csv"
         val tipoFile=properties.getProperty("backup.Tipo").uppercase(Locale.getDefault()).toTipo()?: Tipo.CSV
         val dataDir= Path.of(directorioUsado,dataDirPropiedad).pathString
         val backupDir=Path.of(directorioUsado,backupDirPropiedad).pathString
@@ -49,4 +50,4 @@ object Config {
             data.mkdir()
         }
     }
-}data class ConfiguracionProperties(val dataDir: String = "resources", val backupDir: String = "data", val tipo: Tipo =Tipo.CSV, val file: String ="personal.json")
+}data class ConfiguracionProperties(val dataDir: String = "resources", val backupDir: String = "data", val tipo: Tipo =Tipo.CSV, val file: String ="personal.json", val LocalTime:String)
