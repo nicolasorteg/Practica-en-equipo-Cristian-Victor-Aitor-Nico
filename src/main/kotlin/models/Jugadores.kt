@@ -1,8 +1,9 @@
 
 package models
 
+import jugadores
 import java.time.LocalDate
-import models.Persona
+
 class Jugadores(
     id:Long,
     nombre:String,
@@ -25,6 +26,7 @@ class Jugadores(
                 "partidos_jugados: $partidosJugados"
     }
 }
+
 
 enum class Posicion {
     DELANTERO,CENTROCAMPISTA,PORTERO,DEFENSA
