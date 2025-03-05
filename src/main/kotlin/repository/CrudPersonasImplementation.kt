@@ -16,7 +16,7 @@ class CrudPersonasImplementation:CrudPersonas {
      * @return lista con personas
      */
     override fun getAll(): List<Persona> {
-        logger.info { "obteniendo todos las personas UwU" }
+        logger.info { "obteniendo todos las personas" }
         return personas.values.toList()
     }
 

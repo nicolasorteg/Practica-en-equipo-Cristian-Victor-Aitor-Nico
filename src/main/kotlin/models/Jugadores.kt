@@ -1,7 +1,4 @@
-
 package models
-
-import jugadores
 import java.time.LocalDate
 
 class Jugadores(
