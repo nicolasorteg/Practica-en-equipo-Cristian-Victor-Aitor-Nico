@@ -3,14 +3,26 @@ package services
 import cache.Cache
 import exception.PersonasException
 import models.Persona
+import org.lighthousegames.logging.logging
 import repository.CrudPersonasImplementation
+import storage.PersonalStorageCsv
+import storage.PersonalStorageJson
+import storage.PersonalStorageXml
 import validator.Validador
+import java.nio.file.Path
+import kotlin.io.path.name
 
 class PersonaServiceImplementation(
-    private val repositorio:CrudPersonasImplementation,
+    internal val repositorio:CrudPersonasImplementation,
     private val cache: Cache<Long, Persona>
+
 ):PersonaService {
+    private val storageJson: PersonalStorageJson = PersonalStorageJson()
+    private val storageCsv: PersonalStorageCsv = PersonalStorageCsv()
+    private val storageXml: PersonalStorageXml = PersonalStorageXml()
+    internal val logger= logging()
     override fun getAll(): List<Persona> {
+        logger.info { "pasando a repositorio" }
         return repositorio.getAll()
     }
 
@@ -43,4 +55,39 @@ class PersonaServiceImplementation(
         cache[id] = actualizado
         return actualizado
     }
+
+    override fun importarDatosDesdeFichero(fichero: Path) {
+        logger.info { "Seleccionando tipo" }
+        val texto=fichero.name.split(".")
+        when(texto[2]){
+            "csv"->{
+                val lista=storageCsv.leerDelArchivo(fichero.toFile())
+                lista.forEach{repositorio.save(it)}
+            }
+            "json"->{
+                val lista=storageJson.leerDelArchivo(fichero.toFile())
+                lista.forEach{repositorio.save(it)}
+            }
+            "xml"->{
+                val lista=storageXml.readFromFile(fichero.toFile())
+                lista.forEach{repositorio.save(it)}
+
+            }
+        }
+    }
+
+    override fun exportarDatosDesdeFichero(fichero: Path, tipo: Tipo) {
+
+        logger.info { "seleccionando tipo ${tipo.name}" }
+        when(tipo){
+            Tipo.CSV->storageCsv.escribirAUnArchivo(fichero.toFile(),repositorio.getAll())
+            Tipo.JSON-> storageJson.escribirAUnArchivo(fichero.toFile(),repositorio.getAll())
+            Tipo.XML -> storageXml.writeToFile(repositorio.getAll(),fichero.toFile())
+            Tipo.BINARIO -> TODO()
+        }
+    }
+
+}
+enum class Tipo {
+    CSV,JSON,XML,BINARIO
 }
