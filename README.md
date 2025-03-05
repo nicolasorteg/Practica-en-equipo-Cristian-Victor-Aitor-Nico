@@ -18,9 +18,9 @@ Hay un menú con las siguientes opciones
 3. Actualizar miembro de equipo.
 4. Eliminar miembro del equipo.
 5. Copiar datos a fichero según la especificación realizada.
-6. Realizar consultas indicadas.
+6. Realizar utils indicadas.
 
-Además, en el servicio se incluyen consultas ejemplificativas para revisar que los datos se hayan tratado correctamente.
+Además, en el servicio se incluyen utils ejemplificativas para revisar que los datos se hayan tratado correctamente.
 
 
 

@@ -1,6 +1,7 @@
 
 package models
 
+import org.lighthousegames.logging.logging
 import java.time.LocalDate
 
 abstract class Persona(
@@ -13,5 +14,6 @@ abstract class Persona(
    val pais:String,
 
    ){
+   internal val logger= logging()
 
 }
