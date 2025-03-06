@@ -32,7 +32,7 @@ class PersonalStorageJson : PersonalStorage {
      * @return Devuelve la lista de personas leídas del archivo.
      * @throws PersonasException.PersonasStorageException Si el archivo no existe, no se puede leer, o tiene un formato incorrecto.
      */
-    override fun leerDelArchivo (file:File): List<Persona> {
+    override fun leerDelArchivo (file: File): List<Persona> {
 
         logger.debug { "Leyendo personas de fichero JSON: $file" }
 
@@ -58,7 +58,7 @@ class PersonalStorageJson : PersonalStorage {
                 .associate { it[0].trim().removeSurrounding("\"") to it[1].trim().removeSurrounding("\"") }
 
             // dependiendo del rol de cada persona, se crea el DTO correspondiente
-            when (json["tipo"]) {
+            when (json["rol"]) {
 
                 "Jugador" -> {
                     // creación el DTO de Jugador

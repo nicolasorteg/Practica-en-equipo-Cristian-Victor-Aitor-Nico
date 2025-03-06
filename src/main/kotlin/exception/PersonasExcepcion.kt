@@ -17,7 +17,7 @@ sealed class PersonasException(message: String) : Exception(message) {
      *
      * @param id Identificador personal de la persona que no se ha podido encontrar.
      */
-    class PersonaNotFoundException(id: Int): PersonasException("Persona no encontrada con id: $id")
+    class PersonaNotFoundException(id: Any): PersonasException("Persona no encontrada con id: $id")
 
     /**
      * Excepción que indica que los datos de la persona no son válidos
