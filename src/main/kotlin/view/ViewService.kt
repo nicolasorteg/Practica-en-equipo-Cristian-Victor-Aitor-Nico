@@ -55,10 +55,75 @@ class ViewService{
         controller.importarDatosDesdeFichero(productoFile)
     }
 
-    private fun crearMiembro() {
-        TODO()
-    }
+     private fun crearMiembro() {
+        try {
+            println("¿Qué tipo de miembro deseas crear? (1) Jugador (2) Entrenador")
+            val tipo = readln().toIntOrNull()
 
+            if (tipo != 1 && tipo != 2) {
+                println("Opción no válida. Debe ser 1 (Jugador) o 2 (Entrenador).")
+                return
+            }
+
+            println("Introduce el ID:")
+            val id = readln().toLongOrNull() ?: return println("ID inválido")
+
+            println("Introduce el nombre:")
+            val nombre = readln().trim()
+
+            println("Introduce los apellidos:")
+            val apellidos = readln().trim()
+
+            println("Introduce la fecha de nacimiento (YYYY-MM-DD):")
+            val fechaNacimiento = LocalDate.parse(readln())
+
+            println("Introduce la fecha de incorporación (YYYY-MM-DD):")
+            val fechaIncorporacion = LocalDate.parse(readln())
+
+            println("Introduce el salario:")
+            val salario = readln().toDoubleOrNull() ?: return println("Salario inválido")
+
+            println("Introduce el país:")
+            val pais = readln().trim()
+
+            val nuevoMiembro = when (tipo) {
+                1 -> { // Jugador
+                    println("Introduce la posición (DELANTERO, CENTROCAMPISTA, PORTERO, DEFENSA):")
+                    val posicion = Posicion.valueOf(readln().uppercase())
+
+                    println("Introduce el dorsal:")
+                    val dorsal = readln().toIntOrNull() ?: return println("Dorsal inválido")
+
+                    println("Introduce la altura en metros:")
+                    val altura = readln().toDoubleOrNull() ?: return println("Altura inválida")
+
+                    println("Introduce el peso en kg:")
+                    val peso = readln().toDoubleOrNull() ?: return println("Peso inválido")
+
+                    println("Introduce la cantidad de goles:")
+                    val goles = readln().toIntOrNull() ?: 0
+
+                    println("Introduce la cantidad de partidos jugados:")
+                    val partidosJugados = readln().toIntOrNull() ?: 0
+
+                    Jugadores(id, nombre, apellidos, fechaNacimiento, fechaIncorporacion, salario, pais, posicion, dorsal, altura, peso, goles, partidosJugados)
+                }
+                2 -> { // Entrenador
+                    println("Introduce la especialidad (ENTRENADOR_PORTEROS, ENTRENADOR_ASISTENTE, ENTRENADOR_PRINCIPAL):")
+                    val especialidad = Especialidad.valueOf(readln().uppercase())
+
+                    Entrenadores(id, nombre, apellidos, fechaNacimiento, fechaIncorporacion, salario, pais, especialidad)
+                }
+                else -> return
+            }
+
+            controller.update(nuevoMiembro)
+            println("Miembro creado con éxito.")
+
+        } catch (e: Exception) {
+            println("Error al crear el miembro: ${e.message}")
+        }
+    }
     private fun actualizarMiembro() {
         try {
             val id=preguntarId()
