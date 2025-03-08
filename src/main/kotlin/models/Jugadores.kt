@@ -23,8 +23,6 @@ class Jugadores(
                 "partidos_jugados: $partidosJugados"
     }
 }
-
-
 enum class Posicion {
     DELANTERO,CENTROCAMPISTA,PORTERO,DEFENSA
 }

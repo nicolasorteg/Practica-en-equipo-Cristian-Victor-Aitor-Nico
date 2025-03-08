@@ -1,19 +1,17 @@
 package view
 
-import config.Config
 import cache.Cache
 import cache.CacheImplementationLru
-import models.Entrenadores
-import models.Jugadores
+import config.Config
+import mappers.toLocalDate
+import models.*
+import repository.CrudPersonasImplementation
 import services.PersonaServiceImplementation
 import utils.consultas
-import models.Persona
-import models.Posicion
-import repository.CrudPersonasImplementation
+import utils.toEspecialidad
+import utils.toPosicion
 import java.nio.file.Path
-import java.time.LocalDate
 import java.util.*
-
 
 
 class ViewService{
@@ -56,7 +54,7 @@ class ViewService{
     }
 
      private fun crearMiembro() {
-        try {
+
             println("¿Qué tipo de miembro deseas crear? (1) Jugador (2) Entrenador")
             val tipo = readln().toIntOrNull()
 
@@ -65,8 +63,8 @@ class ViewService{
                 return
             }
 
-            println("Introduce el ID:")
-            val id = readln().toLongOrNull() ?: return println("ID inválido")
+
+            val id = 1L
 
             println("Introduce el nombre:")
             val nombre = readln().trim()
@@ -75,10 +73,10 @@ class ViewService{
             val apellidos = readln().trim()
 
             println("Introduce la fecha de nacimiento (YYYY-MM-DD):")
-            val fechaNacimiento = LocalDate.parse(readln())
+            val fechaNacimiento = readln().toLocalDate()
 
             println("Introduce la fecha de incorporación (YYYY-MM-DD):")
-            val fechaIncorporacion = LocalDate.parse(readln())
+            val fechaIncorporacion = readln().toLocalDate()
 
             println("Introduce el salario:")
             val salario = readln().toDoubleOrNull() ?: return println("Salario inválido")
@@ -89,7 +87,7 @@ class ViewService{
             val nuevoMiembro = when (tipo) {
                 1 -> { // Jugador
                     println("Introduce la posición (DELANTERO, CENTROCAMPISTA, PORTERO, DEFENSA):")
-                    val posicion = Posicion.valueOf(readln().uppercase())
+                    val posicion = readln().toPosicion() ?: return println("posicion invalidad")
 
                     println("Introduce el dorsal:")
                     val dorsal = readln().toIntOrNull() ?: return println("Dorsal inválido")
@@ -116,8 +114,8 @@ class ViewService{
                 }
                 else -> return
             }
-
-            controller.update(nuevoMiembro)
+        try{
+            controller.save(nuevoMiembro)
             println("Miembro creado con éxito.")
 
         } catch (e: Exception) {
@@ -125,18 +123,102 @@ class ViewService{
         }
     }
     private fun actualizarMiembro() {
+            val id = preguntarId()
         try {
-            val id=preguntarId()
-            val persona=controller.getByID(id)
-            //falta por finalizar
-        }catch (e:Exception){println(e.message)  }
+            val persona = controller.getByID(id)
+            val listaDatos: Map<Int, String?>
+            when (persona) {
+                is Jugadores -> {
+                    listaDatos = actualizarJugador(persona as Jugadores)
+                }
+
+                is Entrenadores -> {
+                    listaDatos = actualizarEntrenador(persona as Entrenadores)
+                }
+            }
+        } catch (e: Exception) {
+            println(e.message)
+        }
+    }
+
+    private fun actualizarEntrenador(entrenadores: Entrenadores): Map<Int, String?> {
+        val mapa= mutableMapOf<Int, String?>()
+        do {
+            println("que dato quieres cambiar")
+            val numero= readln().toIntOrNull()?: 0
+            if(numero in 1..3){
+                try {
+                    mapa[numero] = actualizarPersona(numero)
+                }catch (e: IllegalArgumentException){println(e.message)}
+            }
+            when(numero){
+                4->{
+                   println("cual es la nueva especialidad(principal, asistente, porteros)")
+                    try {
 
 
+                   mapa[numero] = ("entrenador_" + readln()).toEspecialidad()?.let { this.toString() }
+                       ?: run { mapa[numero]=null; throw IllegalArgumentException("solo se debe introducir principal, asistente, porteros") }
+                    }catch (e: IllegalArgumentException){println(e.message)
+                    }
+                }
+            }
+        }while (numero in 1..4)
+        return mapa as Map<Int, String?>
+    }
+
+    private fun actualizarPersona(numero: Int): String? {
+        when (numero) {
+            1->{
+                println("introduce el nuevo nombre")
+                return readln()
+            }
+            2->{
+                println("introduce el nuevo apellido")
+                return readln()
+            }
+            3->{
+                println("introduce el nuevo salario")
+                readln().toDoubleOrNull()?.let { return this.toString() }?: run { throw IllegalArgumentException("no se ha introducido solo números") }
+            }
+        }
+        return null
+    }
+    val posicion: Posicion,
+    val dorsal:Int,
+    val altura:Double,
+    val peso:Double,
+    val goles:Int,
+    val partidosJugados:Int
+    private fun DatosJugador(numero: Int): String? {
+
+    }
+
+    private fun actualizarJugador(jugadores: Jugadores): Map<Int, String?> {
+        val mapa= mutableMapOf<Int, String?>()
+        do {
+            println("que dato quieres cambiar")
+            val numero= readln().toIntOrNull()?: 0
+            if(numero in 1..3){
+                try {
+                    mapa[numero] = actualizarPersona(numero)
+                }catch (e: IllegalArgumentException){println(e.message)}
+            }else if(numero in 4..9){
+                try {
+                    mapa[numero] = DatosJugador(numero)
+                }catch (e: IllegalArgumentException){println(e.message)}
+            }
+
+            }
+        }while (numero in 1..9)
+        return mapa as Map<Int, String?>
     }
 
     private fun eliminarMiembro() {
         val id=preguntarId()
-        controller.delete(id)
+        try {
+            controller.delete(id)
+        }catch (e:Exception){println(e.message)  }
     }
 
     private fun preguntarId():Long {

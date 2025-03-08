@@ -15,5 +15,4 @@ abstract class Persona(
 
    ){
    internal val logger= logging()
-
 }

@@ -87,6 +87,6 @@ class PersonaMapper {
     }
 }
 
-private fun String.toLocalDate(): LocalDate {
+internal fun String.toLocalDate(): LocalDate {
     TODO()
 }
