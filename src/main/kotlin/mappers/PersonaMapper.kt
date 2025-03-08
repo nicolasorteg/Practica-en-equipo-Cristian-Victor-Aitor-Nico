@@ -3,6 +3,7 @@ package mappers
 import dto.EntrenadorDto
 import dto.JugadorDto
 import dto.PersonaDto
+import exception.PersonasException
 import models.*
 import java.time.LocalDate
 
@@ -59,8 +60,8 @@ class PersonaMapper {
             id = jugadorDto.id,
             nombre = jugadorDto.nombre,
             apellidos = jugadorDto.apellidos,
-            fechaNacimiento = jugadorDto.fechaNacimiento.toLocalDate(),
-            fechaIncorporacion = jugadorDto.fechaIncorporacion.toLocalDate(),
+            fechaNacimiento = toLocalDate() ?: run { throw PersonasException.PersonaInvalidoException("formato fecha invalido o incorrecto")},
+            fechaIncorporacion = toLocalDate() ?: run { throw PersonasException.PersonaInvalidoException("formato fecha invalido o incorrecto")},
             salario = jugadorDto.salario,
             pais = jugadorDto.pais,
             posicion = Posicion.valueOf(jugadorDto.posicion), // Convertimos el String a enum
@@ -79,14 +80,14 @@ class PersonaMapper {
             id = entrenadorDto.id,
             nombre = entrenadorDto.nombre,
             apellidos = entrenadorDto.apellidos,
-            fechaNacimiento = entrenadorDto.fechaNacimiento.toLocalDate(),
-            fechaIncorporacion = entrenadorDto.fechaIncorporacion.toLocalDate(),
+            fechaNacimiento = toLocalDate() ?: run { throw PersonasException.PersonaInvalidoException("formato fecha invalido o incorrecto")},
+            fechaIncorporacion = toLocalDate() ?: run { throw PersonasException.PersonaInvalidoException("formato fecha invalido o incorrecto")},
             salario = entrenadorDto.salario,
             pais = entrenadorDto.pais
         )
     }
 }
 
-private fun String.toLocalDate(): LocalDate {
+internal fun toLocalDate(): LocalDate? {
     TODO()
 }

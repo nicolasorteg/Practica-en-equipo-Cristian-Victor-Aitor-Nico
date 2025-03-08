@@ -1,19 +1,19 @@
 package view
 
-import config.Config
 import cache.Cache
 import cache.CacheImplementationLru
-import models.Entrenadores
-import models.Jugadores
+import config.Config
+import exception.PersonasException
+import mappers.toLocalDate
+import models.*
+import repository.CrudPersonasImplementation
 import services.PersonaServiceImplementation
 import utils.consultas
-import models.Persona
-import models.Posicion
-import repository.CrudPersonasImplementation
+import utils.copy
+import utils.toEspecialidad
+import utils.toPosicion
 import java.nio.file.Path
-import java.time.LocalDate
 import java.util.*
-
 
 
 class ViewService{
@@ -22,6 +22,9 @@ class ViewService{
     private val configuracion=Config.configProperties
     private val controller=PersonaServiceImplementation(repositorio, cache)
 
+    /**
+     * Crea un menu para moverse entre las distintas zonas del programa
+     */
     fun menu(){
         var salir = false
         while (!salir) {
@@ -50,35 +53,41 @@ class ViewService{
             }
         }
     }
-    fun cargarDatosDesdeFichero() {
+
+    /**
+     * carga los datos de un un archivo al repositorio
+     */
+    private fun cargarDatosDesdeFichero() {
         val productoFile= Path.of(configuracion.dataDir,configuracion.file)
-        controller.importarDatosDesdeFichero(productoFile)
+        try {
+            controller.importarDatosDesdeFichero(productoFile)
+        }catch (e:PersonasException.PersonasStorageExcepcion){println(e.message)}
     }
 
-     private fun crearMiembro() {
-        try {
-            println("¿Qué tipo de miembro deseas crear? (1) Jugador (2) Entrenador")
-            val tipo = readln().toIntOrNull()
+    /**
+     * Crea una nueva persona y la guarda en el repositorio
+     */
+    private fun crearMiembro() {
 
-            if (tipo != 1 && tipo != 2) {
-                println("Opción no válida. Debe ser 1 (Jugador) o 2 (Entrenador).")
-                return
-            }
+         println("¿Qué tipo de miembro deseas crear? (1) Jugador (2) Entrenador")
+         val tipo = readln().toIntOrNull()
 
-            println("Introduce el ID:")
-            val id = readln().toLongOrNull() ?: return println("ID inválido")
+         if (tipo != 1 && tipo != 2) {
+             println("Opción no válida. Debe ser 1 (Jugador) o 2 (Entrenador).")
+             return
+         }
+         val id = 1L
+         println("Introduce el nombre:")
+         val nombre = readln().trim()
 
-            println("Introduce el nombre:")
-            val nombre = readln().trim()
+         println("Introduce los apellidos:")
+         val apellidos = readln().trim()
 
-            println("Introduce los apellidos:")
-            val apellidos = readln().trim()
-
-            println("Introduce la fecha de nacimiento (YYYY-MM-DD):")
-            val fechaNacimiento = LocalDate.parse(readln())
+         println("Introduce la fecha de nacimiento (YYYY-MM-DD):")
+         val fechaNacimiento = toLocalDate() ?: return println("fecha invalida")
 
             println("Introduce la fecha de incorporación (YYYY-MM-DD):")
-            val fechaIncorporacion = LocalDate.parse(readln())
+            val fechaIncorporacion = toLocalDate() ?: return println("fecha invalida")
 
             println("Introduce el salario:")
             val salario = readln().toDoubleOrNull() ?: return println("Salario inválido")
@@ -89,7 +98,7 @@ class ViewService{
             val nuevoMiembro = when (tipo) {
                 1 -> { // Jugador
                     println("Introduce la posición (DELANTERO, CENTROCAMPISTA, PORTERO, DEFENSA):")
-                    val posicion = Posicion.valueOf(readln().uppercase())
+                    val posicion = readln().toPosicion() ?: return println("posición invalidad")
 
                     println("Introduce el dorsal:")
                     val dorsal = readln().toIntOrNull() ?: return println("Dorsal inválido")
@@ -116,29 +125,176 @@ class ViewService{
                 }
                 else -> return
             }
-
-            controller.update(nuevoMiembro)
+        try{
+            controller.save(nuevoMiembro)
             println("Miembro creado con éxito.")
-
         } catch (e: Exception) {
             println("Error al crear el miembro: ${e.message}")
         }
     }
+
+    /**
+     * Actualiza los datos de una persona
+     */
     private fun actualizarMiembro() {
+            val id = preguntarId()
         try {
-            val id=preguntarId()
-            val persona=controller.getByID(id)
-            //falta por finalizar
-        }catch (e:Exception){println(e.message)  }
+            val persona = controller.getByID(id)
 
-
+            val listaDatos: Map<Int, String?>
+            when (persona) {
+                is Jugadores -> {
+                    listaDatos = actualizarJugador()
+                    val newPersona= persona.copy(listaDatos)
+                    repositorio.save(newPersona)
+                }
+                is Entrenadores -> {
+                    listaDatos = actualizarEntrenador()
+                    val newPersona=persona.copy(listaDatos)
+                    repositorio.save(newPersona)
+                }
+            }
+        } catch (e: Exception) {
+            println(e.message)
+        }
     }
 
+    /**
+     * Obtiene los datos a actualizar de un Entrenador
+     * @return map con los datos a actualizar
+     */
+    private fun actualizarEntrenador(): Map<Int, String?> {
+        val mapa= mutableMapOf<Int, String?>()
+        do {
+            println("que dato quieres cambiar")
+            println()
+            println("""1: nombre
+                |2: apellidos
+                |3: salario
+                |4: especialidad
+            """.trimMargin())
+            val numero= readln().toIntOrNull()?: 0
+            if(numero in 1..3){
+                try {
+                    mapa[numero] = actualizarPersona(numero)
+                }catch (e: IllegalArgumentException){println(e.message)}
+            }
+            when(numero){
+                4->{
+                    println("cual es la nueva especialidad(principal, asistente, porteros)")
+                    try {
+                        mapa[numero] = ("entrenador_" + readln()).toEspecialidad()?.let { this.toString() }
+                        ?: run { mapa[numero]=null; throw IllegalArgumentException("solo se debe introducir principal, asistente, porteros") }
+                        }catch (e: IllegalArgumentException){println(e.message)
+                    }
+                }
+            }
+        }while (numero in 1..4)
+        return mapa
+    }
+
+    /**
+     * Devuelve el dato a actualizar de una persona
+     * @param numero ubicación del dato a obtener
+     * @throws IllegalArgumentException cuando no se introducen los datos correctamente
+     * @return dato a actualizar
+     */
+    private fun actualizarPersona(numero: Int): String? {
+        when (numero) {
+            1->{
+                println("introduce el nuevo nombre")
+                return readln()
+            }
+            2->{
+                println("introduce el nuevo apellido")
+                return readln()
+            }
+            3->{
+                println("introduce el nuevo salario")
+                readln().toDoubleOrNull()?.let { return this.toString() }?: run { throw IllegalArgumentException("no se ha introducido solo números") }
+            }
+        }
+        return null
+    }
+
+    /**
+     * devuelve un string con un dato en concreto de un jugador a actualizar
+     * @param numero posición del dato a actualiza
+     * @throws IllegalArgumentException cuando no se introducen los datos correctamente
+     * @return el dato actualizado
+     */
+    private fun datosJugador(numero: Int): String? {
+        when (numero) {
+            4->{
+                println("introduce la nueva posición (delantero, portero, centrocampista, defensa)")
+                return readln().toPosicion()?.let { this.toString() }?: run { throw IllegalArgumentException("posición invalida, solo se pueden poner(delantero, centrocampista, defensa y portero)") }
+            }
+            5->{
+                println("introduce el nuevo dorsal")
+                return readln().toIntOrNull()?.let { this.toString() }?:run { throw IllegalArgumentException("dorsal invalido, solo se permiten números enteros") }
+            }
+            6->{
+                println("introduce el nuevo peso")
+                return readln().toDoubleOrNull()?.let { this.toString() }?:run { throw IllegalArgumentException("el peso solo puede contener números") }
+            }
+            7->{
+                println("introduce el nuevo numero de goles")
+                return readln().toIntOrNull()?.let { this.toString() }?:run { throw IllegalArgumentException("goles invalido solo se permiten números enteros") }
+            }
+            8->{
+                println("introduce en nuevo numero de partidos jugados")
+                return readln().toIntOrNull()?.let { this.toString() }?: run { throw IllegalArgumentException("partidos jugados solo permite números enteros") }
+            }
+        }
+        return null
+    }
+
+    /**
+     * Obtiene los datos a cambiar de un jugador
+     * @return devuelve un mapa<Int,String?> con los datos a cambiar
+     */
+    private fun actualizarJugador(): Map<Int, String?> {
+        val mapa= mutableMapOf<Int, String?>()
+        do {
+            println("que dato quieres cambiar")
+            println()
+            println("""1: nombre
+                |2: apellidos
+                |3: salario
+                |4: posición
+                |5: dorsal
+                |6: peso
+                |7: numero de goles
+                |8: numero de partidos jugados
+            """.trimMargin())
+            val numero= readln().toIntOrNull()?: 0
+            if(numero in 1..3){
+                try {
+                    mapa[numero] = actualizarPersona(numero)
+                }catch (e: IllegalArgumentException){println(e.message)}
+            }else if(numero in 4..8){
+                try {
+                    mapa[numero] = datosJugador(numero)
+                }catch (e: IllegalArgumentException){println(e.message)}
+            }
+        }while (numero in 1..8)
+        return mapa
+    }
+
+    /**
+     * Elimina un miembro según un ID proporcionado
+     */
     private fun eliminarMiembro() {
         val id=preguntarId()
-        controller.delete(id)
+        try {
+            controller.delete(id)
+        }catch (e:Exception){println(e.message)  }
     }
 
+    /**
+     * Pregunta un, id por terminal
+     * @return id proporcionada en Long
+     */
     private fun preguntarId():Long {
         println("introduce la id del jugador a eliminar")
         var id:Long
@@ -151,10 +307,15 @@ class ViewService{
         return id
     }
 
+    /**
+     * Exporta una los datos del repositorio a un archivo
+     */
     private fun copiarDatosAFichero() {
         val exportFile= Path.of(configuracion.backupDir,"personal.${configuracion.tipo.toString()
             .lowercase(Locale.getDefault())}")
-        controller.exportarDatosDesdeFichero(exportFile,configuracion.tipo)
+        try {
+            controller.exportarDatosDesdeFichero(exportFile,configuracion.tipo)
+        }catch (e:PersonasException.PersonasStorageExcepcion){println(e.message)}
     }
 
     private fun realizarConsultas(){
