@@ -57,8 +57,8 @@ class PersonalStorageXml {
                     id = personaDto.id,
                     nombre = personaDto.nombre,
                     apellidos = personaDto.apellidos,
-                    fechaNacimiento = LocalDate.parse(personaDto.fechaNacimiento), // Convertir a LocalDate
-                    fechaIncorporacion = LocalDate.parse(personaDto.fechaIncorporacion), // Convertir a LocalDate
+                    fechaNacimiento = personaDto.fechaNacimiento, // Convertir a LocalDate
+                    fechaIncorporacion = personaDto.fechaIncorporacion, // Convertir a LocalDate
                     salario = personaDto.salario, // Convertir a Double si es necesario
                     pais = personaDto.pais,
                     posicion = personaDto.posicion.toString(),
@@ -72,8 +72,8 @@ class PersonalStorageXml {
                     id = personaDto.id,
                     nombre = personaDto.nombre,
                     apellidos = personaDto.apellidos,
-                    fechaNacimiento = LocalDate.parse(personaDto.fechaNacimiento), // Convertir a LocalDate
-                    fechaIncorporacion = LocalDate.parse(personaDto.fechaIncorporacion), // Convertir a LocalDate
+                    fechaNacimiento = personaDto.fechaNacimiento, // Convertir a LocalDate
+                    fechaIncorporacion = personaDto.fechaIncorporacion, // Convertir a LocalDate
                     salario = personaDto.salario, // Convertir a Double si es necesario
                     pais = personaDto.pais,
                     especialidad = personaDto.especialidad.toString()

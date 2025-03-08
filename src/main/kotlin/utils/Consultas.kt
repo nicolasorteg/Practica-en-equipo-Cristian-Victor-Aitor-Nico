@@ -56,9 +56,9 @@ fun PersonaServiceImplementation.consultas(){
             println(jugadores.filter { it.salario > salarioPromedio })
         }
         10 -> println(jugadores.sumOf { it.partidosJugados })
-        11 -> println(jugadores.groupBy { it.fechaIncorporacion.year })
+        11 -> println(jugadores.groupBy { it.fechaIncorporacion?.year })
         12 -> println(entrenadores.groupBy { it.especialidad })
-        13 -> println(jugadores.minByOrNull { it.fechaNacimiento })
+        13 -> println(jugadores.minByOrNull { it.fechaNacimiento!! })
         14 -> println()
     }
 }
