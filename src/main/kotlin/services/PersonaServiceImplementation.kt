@@ -8,7 +8,7 @@ import repository.CrudPersonasImplementation
 import storage.PersonalStorageCsv
 import storage.PersonalStorageJson
 import storage.PersonalStorageXml
-import validator.Validador
+import validator.validador
 import java.nio.file.Path
 import kotlin.io.path.name
 
@@ -39,7 +39,7 @@ class PersonaServiceImplementation(
     }
 
     override fun save(persona: Persona): Persona {
-        persona.Validador()
+        persona.validador()
         return repositorio.save(persona)
     }
 
@@ -50,7 +50,7 @@ class PersonaServiceImplementation(
     }
 
     override fun update(id: Long,persona: Persona): Persona {
-        persona.Validador()
+        persona.validador()
         val actualizado=repositorio.update(persona,id) ?: throw PersonasException.PersonaNotFoundException(id)
         cache[id] = actualizado
         return actualizado
@@ -80,7 +80,7 @@ class PersonaServiceImplementation(
 
         logger.info { "seleccionando tipo ${tipo.name}" }
         when(tipo){
-            Tipo.CSV->storageCsv.escribirAUnArchivo(fichero.toFile(),repositorio.getAll())
+            Tipo.CSV-> storageCsv.escribirAUnArchivo(fichero.toFile(),repositorio.getAll())
             Tipo.JSON-> storageJson.escribirAUnArchivo(fichero.toFile(),repositorio.getAll())
             Tipo.XML -> storageXml.writeToFile(repositorio.getAll(),fichero.toFile())
             Tipo.BINARIO -> TODO()

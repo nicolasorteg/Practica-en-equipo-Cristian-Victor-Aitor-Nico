@@ -6,13 +6,13 @@ import org.lighthousegames.logging.logging
 import exception.PersonasException
 
 /**
- * revisa si los datos introducidos en Persona{Jugadores/Entrenadores} son corrector
- * @throws personaInvalidoException
+ * Revisa si los datos introducidos en Persona{Jugadores/Entrenadores} son corrector
+ * @throws PersonasException.PersonaInvalidoException
  * @receiver Persona
  */
-fun Persona.Validador() {
+fun Persona.validador() {
     logger.debug { "validando persona" }
-    val numeros:Regex = Regex("^*[0-9]*$")
+    val numeros = Regex("^*[0-9]*$")
    if(nombre.isBlank()){
        throw PersonasException.PersonaInvalidoException("el nombre esta en blanco")
    }
@@ -23,13 +23,13 @@ fun Persona.Validador() {
         throw PersonasException.PersonaInvalidoException("el nombre no pueden contener numeros")
     }
     if(apellidos.isBlank()){
-        throw PersonasException.PersonaInvalidoException("los apellidos estan en blanco")
+        throw PersonasException.PersonaInvalidoException("los apellidos están en blanco")
     }
     if (apellidos.length <= 2){
-        throw PersonasException.PersonaInvalidoException("apellidos invalidos, demasiado cortos")
+        throw PersonasException.PersonaInvalidoException("apellidos inválidos, demasiado cortos")
     }
     if(apellidos.contains(numeros)){
-        throw PersonasException.PersonaInvalidoException("los apellidos no pueden contener numeros")
+        throw PersonasException.PersonaInvalidoException("los apellidos no pueden contener números")
     }
     if (salario<=0){
         throw PersonasException.PersonaInvalidoException("salario invalido, salario negativo o igual a 0")
@@ -41,7 +41,7 @@ fun Persona.Validador() {
         throw PersonasException.PersonaInvalidoException("pais invalido, demasiado corto")
     }
     if(pais.contains(numeros)){
-        throw PersonasException.PersonaInvalidoException("el pais no pueden contener numeros")
+        throw PersonasException.PersonaInvalidoException("el pais no pueden contener números")
     }
     //para comprobar si están correctos el resto de datos
     when(this) {
@@ -52,7 +52,7 @@ fun Persona.Validador() {
 /**
  * comprueba el resto de datos de jugadores
  * @param jugadores jugador a comprobar
- * @throws personaInvalidoException
+ * @throws PersonasException.PersonaInvalidoException
  */
 private fun validarJugador(jugadores: Jugadores) {
     val logger=logging()
@@ -79,7 +79,7 @@ private fun validarJugador(jugadores: Jugadores) {
         throw PersonasException.PersonaInvalidoException("goles invalido, goles negativo")
     }
     if (jugadores.partidosJugados<0){
-        throw PersonasException.PersonaInvalidoException("partidos jugados invalidos, partidos negativo")
+        throw PersonasException.PersonaInvalidoException("partidos jugados inválidos, partidos negativo")
     }
 }
 
