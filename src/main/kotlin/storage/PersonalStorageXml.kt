@@ -7,7 +7,6 @@ import models.Persona
 import mappers.PersonaMapper
 import models.Entrenadores
 import models.Jugadores
-
 import nl.adaptivity.xmlutil.serialization.XML
 import org.lighthousegames.logging.logging
 import java.io.File
@@ -32,7 +31,7 @@ class PersonalStorageXml {
      * Lee las personas desde un archivo XML.
      * @param file El archivo XML desde el que se leerán las personas.
      * @return Lista de personas (Jugadores o Entrenadores).
-     * @throws PersonasException.PersonasStorageException Si el archivo no existe, no es un archivo o no se puede leer.
+     * @throws PersonasException.PersonasStorageExcepcion Si el archivo no existe, no es un archivo o no se puede leer.
      */
     fun readFromFile(file: File): List<Persona> {
         logger.debug { "Leyendo personas de fichero XML: $file" }
@@ -57,24 +56,24 @@ class PersonalStorageXml {
                     id = personaDto.id,
                     nombre = personaDto.nombre,
                     apellidos = personaDto.apellidos,
-                    fechaNacimiento = personaDto.fechaNacimiento, // Convertir a LocalDate
-                    fechaIncorporacion = personaDto.fechaIncorporacion, // Convertir a LocalDate
-                    salario = personaDto.salario, // Convertir a Double si es necesario
+                    fechaNacimiento = LocalDate.parse(personaDto.fechaNacimiento).toString(), // Convertir a LocalDate
+                    fechaIncorporacion = LocalDate.parse(personaDto.fechaIncorporacion).toString(), // Convertir a LocalDate
+                    salario = personaDto.salario.toDouble(), // Convertir a Double si es necesario
                     pais = personaDto.pais,
                     posicion = personaDto.posicion.toString(),
-                    dorsal = personaDto.dorsal ?: 0 , // Convertir a Int si es necesario
-                    altura = personaDto.altura ?: 0.0, // Convertir a Double si es necesario
-                    peso = personaDto.peso ?: 0.0, // Convertir a Double si es necesario
-                    goles = personaDto.goles ?: 0, // Convertir a Int si es necesario
-                    partidosJugados = personaDto.partidosJugados ?: 0// Convertir a Int si es necesario
+                    dorsal = personaDto.dorsal?.toInt() ?: 0 , // Convertir a Int si es necesario
+                    altura = personaDto.altura?.toDouble() ?: 0.0, // Convertir a Double si es necesario
+                    peso = personaDto.peso?.toDouble() ?: 0.0, // Convertir a Double si es necesario
+                    goles = personaDto.goles?.toInt() ?: 0, // Convertir a Int si es necesario
+                    partidosJugados = personaDto.partidosJugados?.toInt() ?: 0// Convertir a Int si es necesario
                 ))
                 "Entrenador" -> personaMapper.toModel(EntrenadorDto(
                     id = personaDto.id,
                     nombre = personaDto.nombre,
                     apellidos = personaDto.apellidos,
-                    fechaNacimiento = personaDto.fechaNacimiento, // Convertir a LocalDate
-                    fechaIncorporacion = personaDto.fechaIncorporacion, // Convertir a LocalDate
-                    salario = personaDto.salario, // Convertir a Double si es necesario
+                    fechaNacimiento = LocalDate.parse(personaDto.fechaNacimiento).toString(), // Convertir a LocalDate
+                    fechaIncorporacion = LocalDate.parse(personaDto.fechaIncorporacion).toString(), // Convertir a LocalDate
+                    salario = personaDto.salario.toDouble(), // Convertir a Double si es necesario
                     pais = personaDto.pais,
                     especialidad = personaDto.especialidad.toString()
                 ))
@@ -88,7 +87,7 @@ class PersonalStorageXml {
      * Escribe las personas en un archivo XML.
      * @param personas La lista de personas (Jugadores o Entrenadores) que se escribirán.
      * @param file El archivo XML donde se guardarán las personas.
-     * @throws PersonasException.PersonasStorageException Si el directorio no existe o no es válido.
+     * @throws PersonasException.PersonasStorageExcepcion Si el directorio no existe o no es válido.
      */
     fun writeToFile(personas: List<Persona>, file: File) {
         logger.debug { "Escribiendo personas en fichero XML: $file" }

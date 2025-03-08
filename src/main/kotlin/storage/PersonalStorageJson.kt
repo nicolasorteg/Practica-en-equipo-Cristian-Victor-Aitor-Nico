@@ -5,16 +5,16 @@ import dto.JugadorDto
 import exception.PersonasException
 import models.Persona
 import mappers.PersonaMapper
+import mappers.toLocalDate
 import models.Entrenadores
 import models.Jugadores
-
 import org.lighthousegames.logging.logging
 import java.io.File
 import java.time.LocalDate
 
-
 /**
- * Esta es la implementación de la interfaz PersonalStorage.kt para leer y escribir datos de un listado de personas en formato JSON.
+ * Esta clase se encarga de leer y escribir personas (Jugadores y Entrenadores)
+ * en formato JSON.
  */
 class PersonalStorageJson : PersonalStorage {
 
@@ -24,16 +24,15 @@ class PersonalStorageJson : PersonalStorage {
     // Instancia del Mapper que se encarga de la conversión entre modelos y DTOs
     private val personaMapper = PersonaMapper()
 
-
     /**
      * Esta función lee las personas de un archivo JSON y las devuelve como una lista de objetos Persona.
      *
      * @param file Este es el archivo JSON desde el cual se leen los datos.
      * @return Devuelve la lista de personas leídas del archivo.
-     * @throws PersonasException.PersonasStorageException Si el archivo no existe, no se puede leer, o tiene un formato incorrecto.
+     * @throws PersonasStorageException Si el archivo no existe, no se puede leer, o tiene un formato incorrecto.
      */
-    override fun leerDelArchivo (file: File): List<Persona> {
-
+    override fun leerDelArchivo (file:File): List<Persona> {
+        // Mensaje de debug para la lectura del archivo
         logger.debug { "Leyendo personas de fichero JSON: $file" }
 
         // verificación de que el archivo sea válido antes de intentar leerlo
@@ -42,14 +41,14 @@ class PersonalStorageJson : PersonalStorage {
             throw PersonasException.PersonasStorageException("El fichero no existe, o no es un fichero o no se puede leer: $file")
         }
 
-
-        val jsonContent = file.readText() // lectura el contenido del archivo JSON
+        // lectura el contenido del archivo JSON
+        val jsonContent = file.readText()
 
         val personas = mutableListOf<Persona>()
 
         val personasJson = jsonContent.trim().removeSurrounding("[", "]").split("}, {")
 
-
+        // se recorre cada objeto JSON para convertirlo en el tipo correspondiente
         for (personaJson in personasJson) {
             val json = personaJson
                 .removeSurrounding("{", "}")
@@ -59,15 +58,17 @@ class PersonalStorageJson : PersonalStorage {
 
             // dependiendo del rol de cada persona, se crea el DTO correspondiente
             when (json["rol"]) {
-
                 "Jugador" -> {
                     // creación el DTO de Jugador
                     val jugadorDto = JugadorDto(
                         id = json["id"]?.toLong() ?: 0,
                         nombre = json["nombre"] ?: "",
                         apellidos = json["apellidos"] ?: "",
-                        fechaNacimiento = json["fechaNacimiento"] ?: "",
-                        fechaIncorporacion = json["fechaIncorporacion"] ?: "",
+
+                        fechaNacimiento = json["fechaNacimiento"]?.takeIf { it.isNotBlank() }?.let { toLocalDate(it)?.toString() } ?: "",
+                        fechaIncorporacion = json["fechaIncorporacion"]?.takeIf { it.isNotBlank() }?.let { toLocalDate(it)?.toString() } ?: "",
+
+
                         salario = json["salario"]?.toDouble() ?: 0.0,
                         pais = json["pais"] ?: "",
                         posicion = json["posicion"] ?: "",
@@ -79,8 +80,6 @@ class PersonalStorageJson : PersonalStorage {
                     )
                     // conversión del DTO a modelo y se agrega a la lista
                     personas.add(personaMapper.toModel(jugadorDto))
-
-
                 }
                 "Entrenador" -> {
                     // creación del DTO de entrenador
@@ -88,22 +87,26 @@ class PersonalStorageJson : PersonalStorage {
                         id = json["id"]?.toLong() ?: 0,
                         nombre = json["nombre"] ?: "",
                         apellidos = json["apellidos"] ?: "",
-                        fechaNacimiento = json["fechaNacimiento"] ?: "",
-                        fechaIncorporacion = json["fechaIncorporacion"] ?: "",
+
+                        fechaNacimiento = json["fechaNacimiento"]?.takeIf { it.isNotBlank() }?.let { toLocalDate(it)?.toString() } ?: "",
+                        fechaIncorporacion = json["fechaIncorporacion"]?.takeIf { it.isNotBlank() }?.let { toLocalDate(it)?.toString() } ?: "",
+
+
                         salario = json["salario"]?.toDouble() ?: 0.0,
                         pais = json["pais"] ?: "",
                         especialidad = json["especialidad"] ?: ""
                     )
-
                     // conversión del DTO a modelo y se agrega a la lista
                     personas.add(personaMapper.toModel(entrenadorDto))
                 }
-                else -> { // si no es ni jugador ni entrenador = excepción
+                else -> {
+                    // si no es ni jugador ni entrenador = excepción
                     throw IllegalArgumentException("Tipo de persona desconocido en JSON")
                 }
             }
         }
 
+        // devolución de la lista de personas convertidas
         return personas
     }
 
@@ -111,15 +114,15 @@ class PersonalStorageJson : PersonalStorage {
      * Se encarga de escribir una lista de personas en un archivo JSON.
      *
      * @param file El archivo JSON donde escribir los datos.
-     * @param persona La lista de personas a escribir en el archivo.
-     * @throws PersonasException.PersonasStorageException Si el archivo no es válido o no se puede escribir.
+     * @param personas La lista de personas a escribir en el archivo.
+     * @throws PersonasStorageExcepcion Si el archivo no es válido o no se puede escribir.
      */
     override fun escribirAUnArchivo (file: File, persona: List<Persona>) {
         // mensaje de debug para la escritura del archivo
         logger.debug { "Escribiendo personas en fichero JSON: $file" }
 
         // verificación de que el directorio del archivo existe y es válido
-        if (!file.parentFile.exists() || !file.parentFile.isDirectory || !file.name.endsWith(".json")) { // si no existe, no está o no es de la extensión .json
+        if (!file.parentFile.exists() || !file.parentFile.isDirectory || !file.name.endsWith(".json")) {
             logger.error { "El directorio padre del fichero no existe: ${file.parentFile.absolutePath}" }
             throw PersonasException.PersonasStorageException("El directorio padre del fichero no existe: ${file.parentFile.absolutePath}")
         }
@@ -127,9 +130,7 @@ class PersonalStorageJson : PersonalStorage {
         // creación del JSON manualmente como String
         val json = persona.joinToString(prefix = "[", postfix = "]") { persona ->
             when (persona) {
-
-                // casting
-                is Jugadores -> """ 
+                is Jugadores -> """
                     {
                         "tipo": "Jugador",
                         "id": "${persona.id}",
@@ -146,8 +147,7 @@ class PersonalStorageJson : PersonalStorage {
                         "goles": "${persona.goles}",
                         "partidosJugados": "${persona.partidosJugados}"
                     }
-                """
-
+                """.trimIndent()
                 is Entrenadores -> """
                     {
                         "tipo": "Entrenador",
@@ -160,7 +160,7 @@ class PersonalStorageJson : PersonalStorage {
                         "pais": "${persona.pais}",
                         "especialidad": "${persona.especialidad.name}"
                     }
-                """
+                """.trimIndent()
                 else -> ""
             }
         }
@@ -168,4 +168,6 @@ class PersonalStorageJson : PersonalStorage {
         // escritura del JSON en el archivo
         file.writeText(json)
     }
+
+
 }
