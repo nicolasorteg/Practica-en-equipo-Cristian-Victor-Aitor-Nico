@@ -6,7 +6,7 @@ import services.Tipo
 import java.util.*
 
 fun String.toTipo(): Tipo {
-    return when(this){
+    return when(this.uppercase(Locale.getDefault())){
         "CSV" -> Tipo.CSV
         "JSON"-> Tipo.JSON
         "XML" -> Tipo.XML
