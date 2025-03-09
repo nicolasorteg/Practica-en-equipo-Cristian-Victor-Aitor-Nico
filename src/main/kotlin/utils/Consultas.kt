@@ -53,7 +53,10 @@ fun PersonaServiceImplementation.consultas(){
         4 -> println(jugadores.filter { it.posicion == Posicion.DEFENSA }.maxByOrNull { it.partidosJugados })
         5 -> println(jugadores.groupBy { it.pais })
         6 -> println(entrenadores.maxByOrNull { it.salario })
-        7 -> println(jugadores.groupBy { it.posicion })
+        7 -> jugadores.groupBy { it.posicion }.forEach { (posicion, lista) ->
+            val promedioAltura = lista.map { it.altura }.average()
+            println("$posicion: $promedioAltura")
+        }
         8 -> println(jugadores.filter { it.goles > 10 })
         9 -> {
             val salarioPromedio = jugadores.map { it.salario }.average()
