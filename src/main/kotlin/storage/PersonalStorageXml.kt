@@ -1,18 +1,19 @@
 package storage
 
 import dto.EntrenadorDto
+import dto.EquipoDtoXml
 import dto.JugadorDto
+import dto.PersonalDtoXml
 import exception.PersonasException
-import models.Persona
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import mappers.PersonaMapper
 import models.Entrenadores
 import models.Jugadores
+import models.Persona
 import nl.adaptivity.xmlutil.serialization.XML
 import org.lighthousegames.logging.logging
 import java.io.File
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import java.time.LocalDate
 
 /**
  * Almacenamiento de personas en XML.
@@ -47,35 +48,35 @@ class PersonalStorageXml {
         val xml = XML {}
 
         // Parsear el XML a la clase correspondiente
-        val equipoDto = xml.decodeFromString<EquipoDto>(xmlString)
+        val equipoDto = xml.decodeFromString<EquipoDtoXml>(xmlString)
 
         // Convertir cada persona en su modelo correspondiente
-        return equipoDto.personal.map { personaDto ->
-            when (personaDto.tipo) {
+        return equipoDto.personal.map {
+            when (it.tipo) {
                 "Jugador" -> personaMapper.toModel(JugadorDto(
-                    id = personaDto.id,
-                    nombre = personaDto.nombre,
-                    apellidos = personaDto.apellidos,
-                    fechaNacimiento = LocalDate.parse(personaDto.fechaNacimiento).toString(), // Convertir a LocalDate
-                    fechaIncorporacion = LocalDate.parse(personaDto.fechaIncorporacion).toString(), // Convertir a LocalDate
-                    salario = personaDto.salario.toDouble(), // Convertir a Double si es necesario
-                    pais = personaDto.pais,
-                    posicion = personaDto.posicion.toString(),
-                    dorsal = personaDto.dorsal?.toInt() ?: 0 , // Convertir a Int si es necesario
-                    altura = personaDto.altura?.toDouble() ?: 0.0, // Convertir a Double si es necesario
-                    peso = personaDto.peso?.toDouble() ?: 0.0, // Convertir a Double si es necesario
-                    goles = personaDto.goles?.toInt() ?: 0, // Convertir a Int si es necesario
-                    partidosJugados = personaDto.partidosJugados?.toInt() ?: 0// Convertir a Int si es necesario
+                    id = it.id.toLong(),
+                    nombre = it.nombre,
+                    apellidos = it.apellidos,
+                    fechaNacimiento = it.fechaNacimiento, // Convertir a LocalDate
+                    fechaIncorporacion = it.fechaIncorporacion, // Convertir a LocalDate
+                    salario = it.salario, // Convertir a Double si es necesario
+                    pais = it.pais,
+                    posicion = it.posicion.toString(),
+                    dorsal = it.dorsal?.toInt() ?: 0 , // Convertir a Int si es necesario
+                    altura = it.altura?.toDouble() ?: 0.0, // Convertir a Double si es necesario
+                    peso = it.peso?.toDouble() ?: 0.0, // Convertir a Double si es necesario
+                    goles = it.goles?.toInt() ?: 0, // Convertir a Int si es necesario
+                    partidosJugados = it.partidosJugados?.toInt() ?: 0// Convertir a Int si es necesario
                 ))
                 "Entrenador" -> personaMapper.toModel(EntrenadorDto(
-                    id = personaDto.id,
-                    nombre = personaDto.nombre,
-                    apellidos = personaDto.apellidos,
-                    fechaNacimiento = LocalDate.parse(personaDto.fechaNacimiento).toString(), // Convertir a LocalDate
-                    fechaIncorporacion = LocalDate.parse(personaDto.fechaIncorporacion).toString(), // Convertir a LocalDate
-                    salario = personaDto.salario.toDouble(), // Convertir a Double si es necesario
-                    pais = personaDto.pais,
-                    especialidad = personaDto.especialidad.toString()
+                    id = it.id.toLong(),
+                    nombre = it.nombre,
+                    apellidos = it.apellidos,
+                    fechaNacimiento = it.fechaNacimiento, // Convertir a LocalDate
+                    fechaIncorporacion = it.fechaIncorporacion, // Convertir a LocalDate
+                    salario = it.salario, // Convertir a Double si es necesario
+                    pais = it.pais,
+                    especialidad = it.especialidad.toString()
                 ))
                 else -> throw IllegalArgumentException("Tipo de persona desconocido en XML")
             }
@@ -99,10 +100,10 @@ class PersonalStorageXml {
         }
 
         // Convertir las personas a DTOs
-        val equipoDto = EquipoDto(personas.map { persona ->
+        val equipoDto = EquipoDtoXml(personas.map { persona ->
             when (persona) {
-                is Jugadores -> PersonalDto(
-                    id = persona.id,
+                is Jugadores -> PersonalDtoXml(
+                    id = persona.id.toInt(),
                     tipo = "Jugador",
                     nombre = persona.nombre,
                     apellidos = persona.apellidos,
@@ -112,14 +113,14 @@ class PersonalStorageXml {
                     pais = persona.pais,
                     especialidad = "",
                     posicion = persona.posicion.name,
-                    dorsal = persona.dorsal,
-                    altura = persona.altura,
-                    peso = persona.peso,
-                    goles = persona.goles,
-                    partidosJugados = persona.partidosJugados
+                    dorsal = persona.dorsal.toString(),
+                    altura = persona.altura.toString(),
+                    peso = persona.peso.toString(),
+                    goles = persona.goles.toString(),
+                    partidosJugados = persona.partidosJugados.toString()
                 )
-                is Entrenadores -> PersonalDto(
-                    id = persona.id,
+                is Entrenadores -> PersonalDtoXml(
+                    id = persona.id.toInt(),
                     tipo = "Entrenador",
                     nombre = persona.nombre,
                     apellidos = persona.apellidos,
@@ -145,28 +146,10 @@ class PersonalStorageXml {
     }
 }
 
-/**
- * DTO que representa la estructura del XML de equipo.
- */
-data class EquipoDto(val personal: List<PersonalDto>)
 
-/**
- * DTO que representa cada persona (jugador o entrenador) dentro del XML.
- */
-data class PersonalDto(
-    val id: Long,
-    val tipo: String,
-    val nombre: String,
-    val apellidos: String,
-    val fechaNacimiento: String,
-    val fechaIncorporacion: String,
-    val salario: Double,
-    val pais: String,
-    val especialidad: String?,
-    val posicion: String?,
-    val dorsal: Int?,
-    val altura: Double?,
-    val peso: Double?,
-    val goles: Int?,
-    val partidosJugados: Int?
-)
+
+
+
+
+
+

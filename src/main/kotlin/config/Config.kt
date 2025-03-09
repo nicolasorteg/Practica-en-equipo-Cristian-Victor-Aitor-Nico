@@ -4,6 +4,7 @@ import org.lighthousegames.logging.logging
 
 import services.Tipo
 import utils.toTipo
+import java.io.File
 import java.io.FileNotFoundException
 import java.nio.file.Path
 import java.util.*
@@ -28,15 +29,19 @@ object Config {
         //crea las constantes basándonos en el archivo properties para crear el objeto configuración
         val stringDateConf:String = properties.getProperty("local.time")?:"en_EN"
         val directorioUsado=System.getProperty("user.dir")
-        val dataDirPropiedad=properties.getProperty("data.directory")?: "resources"
-        val backupDirPropiedad=properties.getProperty("backup.directory")?: "data"
+        val dataDirPropiedad=properties.getProperty("data.directory")?: "data"
+        val backupDirPropiedad=properties.getProperty("backup.directory")?: "backups"
         val readFile=properties.getProperty("data.file")?: "data/personal.csv"
-        val tipoFile= properties.getProperty("backup.Tipo")?.uppercase(Locale.getDefault())?.toTipo() ?:Tipo.CSV
+        val tipoFile= properties.getProperty("backup.Tipo")?.toTipo()?: Tipo.CSV
         val dataDir= Path.of(directorioUsado,dataDirPropiedad).pathString
         val backupDir=Path.of(directorioUsado,backupDirPropiedad).pathString
         crearDirectorios(dataDir,backupDir)
         return ConfiguracionProperties(dataDir,backupDir,tipoFile,readFile,stringDateConf)
 
+    }
+    private fun crearArchivo(backupDir: String,tipoFile: File){
+        logger.info { "creando archivo si no existe" }
+        val archivo=java.io.File(backupDir,"personal"+ tipoFile.toString().lowercase(Locale.getDefault()))
     }
 
     private fun crearDirectorios(dataDir: String, backupDir: String) {

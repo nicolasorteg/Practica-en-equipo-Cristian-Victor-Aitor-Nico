@@ -14,7 +14,6 @@ import utils.toEspecialidad
 import utils.toPosicion
 import java.nio.file.Path
 import java.util.*
-import mappers.toLocalDate
 
 
 class ViewService{
@@ -62,7 +61,7 @@ class ViewService{
         val productoFile= Path.of(configuracion.dataDir,configuracion.file)
         try {
             controller.importarDatosDesdeFichero(productoFile)
-        }catch (e:PersonasException.PersonasStorageException){println(e.message)}
+        }catch (e:PersonasException.PersonasStorageExcepcion){println(e.message)}
     }
 
     /**
@@ -84,11 +83,11 @@ class ViewService{
          println("Introduce los apellidos:")
          val apellidos = readln().trim()
 
-        println("Introduce la fecha de nacimiento (YYYY-MM-DD):")
-        val fechaNacimiento = toLocalDate(readln().trim()) ?: return println("Fecha inválida")
+         println("Introduce la fecha de nacimiento (YYYY-MM-DD):")
+         val fechaNacimiento = readln().toLocalDate() ?: return println("fecha invalida")
 
-        println("Introduce la fecha de incorporación (YYYY-MM-DD):")
-        val fechaIncorporacion = toLocalDate(readln().trim()) ?: return println("Fecha inválida")
+            println("Introduce la fecha de incorporación (YYYY-MM-DD):")
+            val fechaIncorporacion = readln().toLocalDate() ?: return println("fecha invalida")
 
             println("Introduce el salario:")
             val salario = readln().toDoubleOrNull() ?: return println("Salario inválido")
@@ -316,7 +315,7 @@ class ViewService{
             .lowercase(Locale.getDefault())}")
         try {
             controller.exportarDatosDesdeFichero(exportFile,configuracion.tipo)
-        }catch (e:PersonasException.PersonasStorageException){println(e.message)}
+        }catch (e:PersonasException.PersonasStorageExcepcion){println(e.message)}
     }
 
     private fun realizarConsultas(){

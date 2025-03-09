@@ -5,7 +5,6 @@ import dto.JugadorDto
 import exception.PersonasException
 import models.Persona
 import mappers.PersonaMapper
-import mappers.toLocalDate
 import models.Entrenadores
 import models.Jugadores
 import org.lighthousegames.logging.logging
@@ -38,7 +37,7 @@ class PersonalStorageJson : PersonalStorage {
         // verificación de que el archivo sea válido antes de intentar leerlo
         if (!file.exists() || !file.isFile || !file.canRead() || file.length() == 0L || !file.name.endsWith(".json")) {
             logger.error { "El fichero no existe, o no es un fichero o no se puede leer: $file" }
-            throw PersonasException.PersonasStorageException("El fichero no existe, o no es un fichero o no se puede leer: $file")
+            throw PersonasException.PersonasStorageExcepcion("El fichero no existe, o no es un fichero o no se puede leer: $file")
         }
 
         // lectura el contenido del archivo JSON
@@ -64,11 +63,8 @@ class PersonalStorageJson : PersonalStorage {
                         id = json["id"]?.toLong() ?: 0,
                         nombre = json["nombre"] ?: "",
                         apellidos = json["apellidos"] ?: "",
-
-                        fechaNacimiento = json["fechaNacimiento"]?.takeIf { it.isNotBlank() }?.let { toLocalDate(it)?.toString() } ?: "",
-                        fechaIncorporacion = json["fechaIncorporacion"]?.takeIf { it.isNotBlank() }?.let { toLocalDate(it)?.toString() } ?: "",
-
-
+                        fechaNacimiento = json["fecha_nacimiento"] ?: "",
+                        fechaIncorporacion = json["fecha_incorporacion"] ?: "",
                         salario = json["salario"]?.toDouble() ?: 0.0,
                         pais = json["pais"] ?: "",
                         posicion = json["posicion"] ?: "",
@@ -87,11 +83,8 @@ class PersonalStorageJson : PersonalStorage {
                         id = json["id"]?.toLong() ?: 0,
                         nombre = json["nombre"] ?: "",
                         apellidos = json["apellidos"] ?: "",
-
-                        fechaNacimiento = json["fechaNacimiento"]?.takeIf { it.isNotBlank() }?.let { toLocalDate(it)?.toString() } ?: "",
-                        fechaIncorporacion = json["fechaIncorporacion"]?.takeIf { it.isNotBlank() }?.let { toLocalDate(it)?.toString() } ?: "",
-
-
+                        fechaNacimiento = json["fecha_nacimiento"] ?: "",
+                        fechaIncorporacion = json["fecha_incorporacion"] ?: "",
                         salario = json["salario"]?.toDouble() ?: 0.0,
                         pais = json["pais"] ?: "",
                         especialidad = json["especialidad"] ?: ""
@@ -99,10 +92,7 @@ class PersonalStorageJson : PersonalStorage {
                     // conversión del DTO a modelo y se agrega a la lista
                     personas.add(personaMapper.toModel(entrenadorDto))
                 }
-                else -> {
-                    // si no es ni jugador ni entrenador = excepción
-                    throw IllegalArgumentException("Tipo de persona desconocido en JSON")
-                }
+
             }
         }
 
@@ -124,7 +114,7 @@ class PersonalStorageJson : PersonalStorage {
         // verificación de que el directorio del archivo existe y es válido
         if (!file.parentFile.exists() || !file.parentFile.isDirectory || !file.name.endsWith(".json")) {
             logger.error { "El directorio padre del fichero no existe: ${file.parentFile.absolutePath}" }
-            throw PersonasException.PersonasStorageException("El directorio padre del fichero no existe: ${file.parentFile.absolutePath}")
+            throw PersonasException.PersonasStorageExcepcion("El directorio padre del fichero no existe: ${file.parentFile.absolutePath}")
         }
 
         // creación del JSON manualmente como String

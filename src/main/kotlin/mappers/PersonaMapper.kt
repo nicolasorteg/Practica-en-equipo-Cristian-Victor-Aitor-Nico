@@ -5,9 +5,10 @@ import dto.JugadorDto
 import dto.PersonaDto
 import exception.PersonasException
 import models.*
+import utils.toEspecialidad
+import utils.toPosicion
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
 
 /**
  * Clase Mapper que se encarga de convertir entre el modelo Jugador y el DTO JugadorDto.
@@ -56,21 +57,17 @@ class PersonaMapper {
         )
     }
 
-    /**
-     * Convierte un JugadorDto en un Jugador.
-     */
+    // Convierte un JugadorDto a Jugador
     fun toModel(jugadorDto: JugadorDto): Jugadores {
         return Jugadores(
             id = jugadorDto.id,
             nombre = jugadorDto.nombre,
             apellidos = jugadorDto.apellidos,
-            fechaNacimiento = toLocalDate(jugadorDto.fechaNacimiento) ?:
-            throw PersonasException.PersonasInvalidoException("Formato de fecha inválido o incorrecto"),
-            fechaIncorporacion = toLocalDate(jugadorDto.fechaIncorporacion) ?:
-            throw PersonasException.PersonasInvalidoException("Formato de fecha inválido o incorrecto"),
+            fechaNacimiento = jugadorDto.fechaNacimiento.toLocalDate() ?: run { throw PersonasException.PersonaInvalidoException("formato fecha invalido o incorrecto")},
+            fechaIncorporacion = jugadorDto.fechaIncorporacion.toLocalDate() ?: run { throw PersonasException.PersonaInvalidoException("formato fecha invalido o incorrecto")},
             salario = jugadorDto.salario,
             pais = jugadorDto.pais,
-            posicion = Posicion.valueOf(jugadorDto.posicion),
+            posicion = jugadorDto.posicion.toPosicion()!!, // Convertimos el String a enum
             dorsal = jugadorDto.dorsal,
             altura = jugadorDto.altura,
             peso = jugadorDto.peso,
@@ -79,32 +76,21 @@ class PersonaMapper {
         )
     }
 
-
-    /**
-     * Convierte un EntrenadorDto en un entrendor.
-     */
+    // Convierte un EntrenadorDto a Entrenador
     fun toModel(entrenadorDto: EntrenadorDto): Entrenadores {
         return Entrenadores(
-            especialidad = Especialidad.valueOf(entrenadorDto.especialidad),
+            especialidad = entrenadorDto.especialidad.toEspecialidad()!!, // Convertimos el String a enum
             id = entrenadorDto.id,
             nombre = entrenadorDto.nombre,
             apellidos = entrenadorDto.apellidos,
-            fechaNacimiento = toLocalDate(entrenadorDto.fechaNacimiento) ?: throw PersonasException.PersonasInvalidoException("Formato de fecha inválido o incorrecto"),
-            fechaIncorporacion = toLocalDate(entrenadorDto.fechaIncorporacion) ?: throw PersonasException.PersonasInvalidoException("Formato de fecha inválido o incorrecto"),
+            fechaNacimiento = entrenadorDto.fechaNacimiento.toLocalDate() ?: run { throw PersonasException.PersonaInvalidoException("formato fecha invalido o incorrecto")},
+            fechaIncorporacion = entrenadorDto.fechaIncorporacion.toLocalDate() ?: run { throw PersonasException.PersonaInvalidoException("formato fecha invalido o incorrecto")},
             salario = entrenadorDto.salario,
             pais = entrenadorDto.pais
         )
     }
 }
 
-
-/**
- * Convierte el String de las fechas de nacimiento e incorporación a un Formato LocalDate.
- */
-public fun toLocalDate(fecha: String): LocalDate? {
-    return try {
-        LocalDate.parse(fecha, DateTimeFormatter.ISO_LOCAL_DATE)
-    } catch (e: DateTimeParseException) {
-        null
-    }
+internal fun String.toLocalDate(): LocalDate? {
+    return LocalDate.parse(this)
 }
