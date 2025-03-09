@@ -84,10 +84,10 @@ class ViewService{
          val apellidos = readln().trim()
 
          println("Introduce la fecha de nacimiento (YYYY-MM-DD):")
-         val fechaNacimiento = toLocalDate() ?: return println("fecha invalida")
+         val fechaNacimiento = readln().toLocalDate() ?: return println("fecha invalida")
 
             println("Introduce la fecha de incorporación (YYYY-MM-DD):")
-            val fechaIncorporacion = toLocalDate() ?: return println("fecha invalida")
+            val fechaIncorporacion = readln().toLocalDate() ?: return println("fecha invalida")
 
             println("Introduce el salario:")
             val salario = readln().toDoubleOrNull() ?: return println("Salario inválido")

@@ -63,8 +63,8 @@ class PersonalStorageJson : PersonalStorage {
                         id = json["id"]?.toLong() ?: 0,
                         nombre = json["nombre"] ?: "",
                         apellidos = json["apellidos"] ?: "",
-                        fechaNacimiento = LocalDate.parse(json["fechaNacimiento"] ?: "").toString(),
-                        fechaIncorporacion = LocalDate.parse(json["fechaIncorporacion"] ?: "").toString(),
+                        fechaNacimiento = json["fecha_nacimiento"] ?: "",
+                        fechaIncorporacion = json["fecha_incorporacion"] ?: "",
                         salario = json["salario"]?.toDouble() ?: 0.0,
                         pais = json["pais"] ?: "",
                         posicion = json["posicion"] ?: "",
@@ -83,8 +83,8 @@ class PersonalStorageJson : PersonalStorage {
                         id = json["id"]?.toLong() ?: 0,
                         nombre = json["nombre"] ?: "",
                         apellidos = json["apellidos"] ?: "",
-                        fechaNacimiento = LocalDate.parse(json["fechaNacimiento"] ?: "").toString(),
-                        fechaIncorporacion = LocalDate.parse(json["fechaIncorporacion"] ?: "").toString(),
+                        fechaNacimiento = json["fecha_nacimiento"] ?: "",
+                        fechaIncorporacion = json["fecha_incorporacion"] ?: "",
                         salario = json["salario"]?.toDouble() ?: 0.0,
                         pais = json["pais"] ?: "",
                         especialidad = json["especialidad"] ?: ""
@@ -92,10 +92,7 @@ class PersonalStorageJson : PersonalStorage {
                     // conversión del DTO a modelo y se agrega a la lista
                     personas.add(personaMapper.toModel(entrenadorDto))
                 }
-                else -> {
-                    // si no es ni jugador ni entrenador = excepción
-                    throw IllegalArgumentException("Tipo de persona desconocido en JSON")
-                }
+
             }
         }
 
