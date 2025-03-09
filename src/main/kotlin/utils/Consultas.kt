@@ -10,6 +10,10 @@ fun PersonaServiceImplementation.consultas(){
     val lista=repositorio.getAll()
     val jugadores= lista.filter { it is Jugadores }.map { it  as Jugadores}.toList()
     val entrenadores= lista.filter { it is Entrenadores }.map { it as Entrenadores }.toList()
+
+    /**
+     * Realizazr las consultas
+     */
     println("Consultas Disponibles: ")
     println("1. Listados de personal agrupados por entrenadores y jugadores")
     println("2. El delantero más alto")
@@ -46,7 +50,7 @@ fun PersonaServiceImplementation.consultas(){
         1 -> println(lista)
         2 -> println(jugadores.filter { it.posicion == Posicion.DELANTERO }.maxByOrNull { it.altura })
         3 -> println(jugadores.filter { it.posicion == Posicion.DELANTERO }.map { it.goles }.average())
-        4 -> println(jugadores.filter { it.posicion == Posicion.DEFENSA}.maxByOrNull { it.partidosJugados })
+        4 -> println(jugadores.filter { it.posicion == Posicion.DEFENSA }.maxByOrNull { it.partidosJugados })
         5 -> println(jugadores.groupBy { it.pais })
         6 -> println(entrenadores.maxByOrNull { it.salario })
         7 -> println(jugadores.groupBy { it.posicion })
@@ -55,10 +59,16 @@ fun PersonaServiceImplementation.consultas(){
             val salarioPromedio = jugadores.map { it.salario }.average()
             println(jugadores.filter { it.salario > salarioPromedio })
         }
+
         10 -> println(jugadores.sumOf { it.partidosJugados })
-        11 -> println(jugadores.groupBy { it.fechaIncorporacion?.year })
+        11 -> println(jugadores.groupBy { it.fechaIncorporacion.year })
         12 -> println(entrenadores.groupBy { it.especialidad })
-        13 -> println(jugadores.minByOrNull { it.fechaNacimiento!! })
-        14 -> println()
+        13 -> println(jugadores.minByOrNull { it.fechaNacimiento })
+        14 -> jugadores.groupBy { it.posicion }.forEach { (posicion, lista) ->
+            val promedioPeso = lista.map { it.peso }.average()
+            println("$posicion: $promedioPeso")
+        }
+
+        else -> println("Consulta aún no implementada o opción no válida.")
     }
 }
