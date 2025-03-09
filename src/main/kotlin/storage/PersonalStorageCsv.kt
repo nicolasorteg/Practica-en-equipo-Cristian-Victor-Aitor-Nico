@@ -1,39 +1,46 @@
 package storage
 
 import exception.PersonasException
-import models.*
+import models.Entrenadores
+import models.Persona
+import models.Jugadores
+import models.Especialidad
+import models.Posicion
 
 import org.lighthousegames.logging.logging
+
 import java.io.File
 import java.time.LocalDate
 
-/**
- *
- * Esta es la implementación de la interfaz PersonalStorage.kt para leer y escribir datos de un listado de personas en formato CSV.
- *
- */
-class PersonalStorageCsv : PersonalStorage {
 
-    private val logger = logging()
+/**
+ * Esta es la implementación de la interfaz PersonalStorage.kt para leer y escribir datos de un listado de personas en formato CSV.
+ */
+class PersonalStorageCsv: PersonalStorage {
+
+    private val logger = logging() // creación del logger
+
+
 
     /**
      * Se encarga de leer un listado de personas facilitadas por un archivo de extensión .csv.
      *
      * @param file Este es el archivo CSV desde el cual se leen los datos.
      * @return Devuelve la lista de personas leídas del archivo.
-     * @throws PersonasException.PersonasStorageExcepcion Si el archivo no existe, no se puede leer, o tiene un formato incorrecto.
+     * @throws PersonasException.PersonasStorageException Si el archivo no existe, no se puede leer, o tiene un formato incorrecto.
      */
     override fun leerDelArchivo(file: File): List<Persona> {
-        if (!file.isFile || !file.exists() || !file.canRead()) {
+        if (!file.isFile || !file.exists() || !file.canRead()) { // si no tiene un buen formato, no existe o no es puede leer
             logger.error { "El fichero no existe o no se puede leer: $file" }
-            throw PersonasException.PersonasStorageExcepcion("El fichero no existe o no se puede leer: $file")
+            throw PersonasException.PersonasStorageException("El fichero no existe o no se puede leer: $file") // excepción creada en exception/PersonaExcepcion.kt
         }
 
-        return file.readLines()
+        return file.readLines() // devuelve la lista de objetos leídos
             .drop(1) // omisión de cabecera
             .map { it.split(",") } // separación con coma
             .map { it.map { it.trim() } } // eliminación de espacios en blanco
             .map { // mapeando el archivo
+
                 val id = it[0].toLong()
                 val nombre = it[1]
                 val apellidos = it[2]
@@ -45,6 +52,7 @@ class PersonalStorageCsv : PersonalStorage {
 
                 // se crean las instacias Entrenadores y Jugadores dependiendo de su valor en la columna Rol
                 when (rol) {
+
                     "Entrenador" -> Entrenadores(
                         especialidad = Especialidad.valueOf(it[8]),
                         id = id,
@@ -55,6 +63,7 @@ class PersonalStorageCsv : PersonalStorage {
                         salario = salario,
                         pais = pais
                     )
+
                     "Jugador" -> Jugadores(
                         id = id,
                         nombre = nombre,
@@ -70,7 +79,7 @@ class PersonalStorageCsv : PersonalStorage {
                         goles = it[13].toInt(),
                         partidosJugados = it[14].toInt()
                     )
-                    else -> throw PersonasException.PersonasStorageExcepcion("Rol desconocido en el CSV: $rol")
+                    else -> throw PersonasException.PersonasStorageException("Rol desconocido en el CSV: $rol")
                 }
             }
     }
@@ -80,36 +89,36 @@ class PersonalStorageCsv : PersonalStorage {
      *
      * @param file El archivo CSV donde escribir los datos.
      * @param persona La lista de personas a escribir en el archivo.
-     * @throws PersonasException.PersonasStorageExcepcion Si el archivo no es válido o no se puede escribir.
+     * @throws PersonasException.PersonasStorageException Si el archivo no es válido o no se puede escribir.
      */
     override fun escribirAUnArchivo(file: File, persona: List<Persona>) {
         logger.debug { "Escribiendo personas en el fichero CSV: $file" }
 
-        // Comprobamos si el archivo es válido
-        if (!file.parentFile.exists() || !file.parentFile.isDirectory || !file.name.endsWith(".csv", true)) {
+        // comprobación de si el archivo es válido
+        if (!file.parentFile.exists() || !file.parentFile.isDirectory || !file.name.endsWith(".csv", true)) { // si no existe, no está en el directorio o no es de la extensión .csv
             logger.error { "El directorio padre del fichero no existe o el archivo no es un CSV: ${file.parentFile.absolutePath}" }
-            throw PersonasException.PersonasStorageExcepcion("No se puede escribir en el archivo: ${file.parentFile.absolutePath}")
+            throw PersonasException.PersonasStorageException("No se puede escribir en el archivo debido a que no existe o no es de la extensión adecuada 😔")
         }
 
-        // Escribimos la cabecera del CSV
+        // escritura de la cabecera del CSV
         file.writeText("id,nombre,apellidos,fechaNacimiento,fechaIncorporacion,salario,pais,rol,extra1,extra2,extra3,extra4,extra5,extra6,extra7\n")
 
-        // Escribimos cada persona en el archivo
+        // escritura de cada una de las personas en el archivo
         persona.forEach { persona ->
             val csvRow = when (persona) {
                 is Entrenadores -> {
-                    // Extraemos los valores de la clase Entrenadores
+                    // extracción de los valores de la clase Entrenadores
                     "${persona.id},${persona.nombre},${persona.apellidos},${persona.fechaNacimiento},${persona.fechaIncorporacion},${persona.salario},${persona.pais},Entrenador,${persona.especialidad},,,,,,,"
                 }
                 is Jugadores -> {
-                    // Extraemos los valores de la clase Jugadores
+                    // extracción de los valores de la clase Jugadores
                     "${persona.id},${persona.nombre},${persona.apellidos},${persona.fechaNacimiento},${persona.fechaIncorporacion},${persona.salario},${persona.pais},Jugador,${persona.posicion},${persona.dorsal},${persona.altura},${persona.peso},${persona.goles},${persona.partidosJugados},,,"
                 }
-                else -> throw PersonasException.PersonasStorageExcepcion("Tipo de persona desconocido: ${persona::class.simpleName}")
+                else -> throw PersonasException.PersonasStorageException("Tipo de persona desconocido: ${persona::class.simpleName}")
             }
             file.appendText("$csvRow\n")
         }
 
-        logger.info { "Datos guardados correctamente en el fichero CSV: $file" }
+        logger.info { "Datos guardados correctamente 😎" }
     }
 }

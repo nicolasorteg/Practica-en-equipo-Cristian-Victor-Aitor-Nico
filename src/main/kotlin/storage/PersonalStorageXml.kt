@@ -40,7 +40,7 @@ class PersonalStorageXml {
         // Verificar que el archivo sea válido
         if (!file.exists() || !file.isFile || !file.canRead() || file.length() == 0L || !file.name.endsWith(".xml")) {
             logger.error { "El fichero no existe, o no es un fichero o no se puede leer: $file" }
-            throw PersonasException.PersonasStorageExcepcion("El fichero no existe, o no es un fichero o no se puede leer: $file")
+            throw PersonasException.PersonasStorageException("El fichero no existe, o no es un fichero o no se puede leer: $file")
         }
 
         // Leer el archivo XML
@@ -96,7 +96,7 @@ class PersonalStorageXml {
         // Verificar que el archivo sea válido
         if (!file.parentFile.exists() || !file.parentFile.isDirectory || !file.name.endsWith(".xml")) {
             logger.error { "El directorio padre del fichero no existe: ${file.parentFile.absolutePath}" }
-            throw PersonasException.PersonasStorageExcepcion("El directorio padre del fichero no existe: ${file.parentFile.absolutePath}")
+            throw PersonasException.PersonasStorageException("El directorio padre del fichero no existe: ${file.parentFile.absolutePath}")
         }
 
         // Convertir las personas a DTOs

@@ -7,8 +7,8 @@ class Entrenadores(
     id:Long,
     nombre:String,
     apellidos:String,
-    fechaNacimiento: LocalDate,
-    fechaIncorporacion: LocalDate,
+    fechaNacimiento: LocalDate?,
+    fechaIncorporacion: LocalDate?,
     salario:Double,
     pais:String,
     val especialidad:Especialidad
