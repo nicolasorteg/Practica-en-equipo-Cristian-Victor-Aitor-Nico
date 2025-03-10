@@ -96,7 +96,7 @@ class PersonalStorageXml: PersonalStorage {
         }
 
         // convertimos las personas a DTOs
-        val equipoDto = EquipoDtoXml(personas.map { persona ->
+        val equipoDto = EquipoDtoXml(persona.map { persona ->
             when (persona) {
                 is Jugadores -> PersonalDtoXml(
                     id = persona.id.toInt(),
