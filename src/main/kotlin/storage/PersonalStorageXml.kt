@@ -16,17 +16,13 @@ import org.lighthousegames.logging.logging
 import java.io.File
 
 /**
- * Almacenamiento de personas en XML.
- * Esta clase implementa la interfaz para almacenar y leer personas en un fichero XML.
+ * Esta es la implementación de la interfaz PersonalStorage.kt para leer y escribir datos de un listado de personas en formato XML.
  */
 class PersonalStorageXml {
 
     private val logger = logging()
-    private val personaMapper = PersonaMapper() // Usamos el Mapper que has proporcionado
+    private val personaMapper = PersonaMapper() 
 
-    init {
-        logger.debug { "Inicializando almacenamiento de personas en XML" }
-    }
 
     /**
      * Lee las personas desde un archivo XML.
@@ -37,44 +33,44 @@ class PersonalStorageXml {
     fun readFromFile(file: File): List<Persona> {
         logger.debug { "Leyendo personas de fichero XML: $file" }
 
-        // Verificar que el archivo sea válido
-        if (!file.exists() || !file.isFile || !file.canRead() || file.length() == 0L || !file.name.endsWith(".xml")) {
+        // condicional para verificar que el archivo sea válido
+        if (!file.exists() || !file.isFile || !file.canRead() || file.length() == 0L || !file.name.endsWith(".xml")) { // si no existe, no se puede leer, esta vacío o no es de la extensión xml
             logger.error { "El fichero no existe, o no es un fichero o no se puede leer: $file" }
             throw PersonasException.PersonasStorageException("El fichero no existe, o no es un fichero o no se puede leer: $file")
         }
 
-        // Leer el archivo XML
+        // leemos el archivo XML
         val xmlString = file.readText()
         val xml = XML {}
 
-        // Parsear el XML a la clase correspondiente
+        // se paresa el XML a la clase correspondiente
         val equipoDto = xml.decodeFromString<EquipoDtoXml>(xmlString)
 
-        // Convertir cada persona en su modelo correspondiente
+        // se convierte cada persona en su modelo correspondiente
         return equipoDto.personal.map {
             when (it.tipo) {
                 "Jugador" -> personaMapper.toModel(JugadorDto(
                     id = it.id.toLong(),
                     nombre = it.nombre,
                     apellidos = it.apellidos,
-                    fechaNacimiento = it.fechaNacimiento, // Convertir a LocalDate
-                    fechaIncorporacion = it.fechaIncorporacion, // Convertir a LocalDate
-                    salario = it.salario, // Convertir a Double si es necesario
+                    fechaNacimiento = it.fechaNacimiento, 
+                    fechaIncorporacion = it.fechaIncorporacion, 
+                    salario = it.salario, 
                     pais = it.pais,
                     posicion = it.posicion.toString(),
-                    dorsal = it.dorsal?.toInt() ?: 0 , // Convertir a Int si es necesario
-                    altura = it.altura?.toDouble() ?: 0.0, // Convertir a Double si es necesario
-                    peso = it.peso?.toDouble() ?: 0.0, // Convertir a Double si es necesario
-                    goles = it.goles?.toInt() ?: 0, // Convertir a Int si es necesario
-                    partidosJugados = it.partidosJugados?.toInt() ?: 0// Convertir a Int si es necesario
+                    dorsal = it.dorsal?.toInt() ?: 0 ,
+                    altura = it.altura?.toDouble() ?: 0.0, 
+                    peso = it.peso?.toDouble() ?: 0.0, 
+                    goles = it.goles?.toInt() ?: 0, 
+                    partidosJugados = it.partidosJugados?.toInt() ?: 0
                 ))
                 "Entrenador" -> personaMapper.toModel(EntrenadorDto(
                     id = it.id.toLong(),
                     nombre = it.nombre,
                     apellidos = it.apellidos,
-                    fechaNacimiento = it.fechaNacimiento, // Convertir a LocalDate
-                    fechaIncorporacion = it.fechaIncorporacion, // Convertir a LocalDate
-                    salario = it.salario, // Convertir a Double si es necesario
+                    fechaNacimiento = it.fechaNacimiento, 
+                    fechaIncorporacion = it.fechaIncorporacion, 
+                    salario = it.salario, 
                     pais = it.pais,
                     especialidad = it.especialidad.toString()
                 ))
@@ -93,13 +89,13 @@ class PersonalStorageXml {
     fun writeToFile(personas: List<Persona>, file: File) {
         logger.debug { "Escribiendo personas en fichero XML: $file" }
 
-        // Verificar que el archivo sea válido
-        if (!file.parentFile.exists() || !file.parentFile.isDirectory || !file.name.endsWith(".xml")) {
+        // condicional para verificar que el archivo sea válido
+        if (!file.parentFile.exists() || !file.parentFile.isDirectory || !file.name.endsWith(".xml")) { // si no existe, no está en el directorio o no es de la extensión .xml
             logger.error { "El directorio padre del fichero no existe: ${file.parentFile.absolutePath}" }
             throw PersonasException.PersonasStorageException("El directorio padre del fichero no existe: ${file.parentFile.absolutePath}")
         }
 
-        // Convertir las personas a DTOs
+        // convertimos las personas a DTOs
         val equipoDto = EquipoDtoXml(personas.map { persona ->
             when (persona) {
                 is Jugadores -> PersonalDtoXml(
@@ -140,7 +136,7 @@ class PersonalStorageXml {
             }
         })
 
-        // Escribir el archivo XML
+        // escritura del archivo XML
         val xml = XML { indent = 4 }
         file.writeText(xml.encodeToString(equipoDto))
     }
