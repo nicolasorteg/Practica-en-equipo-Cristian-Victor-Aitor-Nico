@@ -28,7 +28,7 @@ class PersonalStorageJson : PersonalStorage {
      *
      * @param file Este es el archivo JSON desde el cual se leen los datos.
      * @return Devuelve la lista de personas leídas del archivo.
-     * @throws PersonasStorageException Si el archivo no existe, no se puede leer, o tiene un formato incorrecto.
+     * @throws PersonasException.PersonasStorageException Si el archivo no existe, no se puede leer, o tiene un formato incorrecto.
      */
     override fun leerDelArchivo (file:File): List<Persona> {
         // Mensaje de debug para la lectura del archivo
@@ -104,8 +104,8 @@ class PersonalStorageJson : PersonalStorage {
      * Se encarga de escribir una lista de personas en un archivo JSON.
      *
      * @param file El archivo JSON donde escribir los datos.
-     * @param personas La lista de personas a escribir en el archivo.
-     * @throws PersonasStorageExcepcion Si el archivo no es válido o no se puede escribir.
+     * @param persona La lista de personas a escribir en el archivo.
+     * @throws PersonasException.PersonasStorageException Si el archivo no es válido o no se puede escribir.
      */
     override fun escribirAUnArchivo (file: File, persona: List<Persona>) {
         // mensaje de debug para la escritura del archivo

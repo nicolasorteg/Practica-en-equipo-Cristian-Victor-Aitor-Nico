@@ -8,10 +8,7 @@ import mappers.toLocalDate
 import models.*
 import repository.CrudPersonasImplementation
 import services.PersonaServiceImplementation
-import utils.consultas
-import utils.copy
-import utils.toEspecialidad
-import utils.toPosicion
+import utils.*
 import java.nio.file.Path
 import java.util.*
 
@@ -168,7 +165,8 @@ class ViewService{
         do {
             println("que dato quieres cambiar")
             println()
-            println("""1: nombre
+            println("""0: salir
+                |1: nombre
                 |2: apellidos
                 |3: salario
                 |4: especialidad
@@ -258,7 +256,8 @@ class ViewService{
         do {
             println("que dato quieres cambiar")
             println()
-            println("""1: nombre
+            println("""0: salir
+                |1: nombre
                 |2: apellidos
                 |3: salario
                 |4: posición
@@ -296,7 +295,7 @@ class ViewService{
      * @return id proporcionada en Long
      */
     private fun preguntarId():Long {
-        println("introduce la id del jugador a eliminar")
+        println("introduce la id del jugador")
         var id:Long
         do {
              id=readln().toLongOrNull()?: 0
@@ -311,7 +310,7 @@ class ViewService{
      * Exporta una los datos del repositorio a un archivo
      */
     private fun copiarDatosAFichero() {
-        val exportFile= Path.of(configuracion.backupDir,"personal.${configuracion.tipo.toString()
+        val exportFile= Path.of(configuracion.backupDir,"personal.${configuracion.tipo.toStringFile()
             .lowercase(Locale.getDefault())}")
         try {
             controller.exportarDatosDesdeFichero(exportFile,configuracion.tipo)

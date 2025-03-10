@@ -10,12 +10,11 @@ import models.Persona
 import org.lighthousegames.logging.logging
 import java.io.File
 import java.io.RandomAccessFile
-import java.util.*
 
 
 /**
  * Almacenamiento de personal en Bin
- * Esta clase implementa la interfaz [PersonalStorageFile] para almacenar y leer personal en un fichero Bin.
+ * Esta clase implementa la interfaz [PersonalStorage] para almacenar y leer personal en un fichero Bin.
  */
 
 class PersonalStorageBin : PersonalStorage {
@@ -80,7 +79,7 @@ class PersonalStorageBin : PersonalStorage {
 
     /**
      * Escribe los empleados (Jugadores y Entrenadores) en un fichero Bin
-     * @param empleados Lista de empleados
+     * @param persona Lista de empleados
      * @param file Fichero bin
      * @throws PersonasException.PersonasStorageException Si el directorio padre del fichero no existe
      */

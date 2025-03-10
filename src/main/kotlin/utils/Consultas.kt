@@ -104,12 +104,6 @@ fun PersonaServiceImplementation.consultas(){
     println(jugadoresPorDecada(jugadores))
 
     println("28. Salario promedio de los jugadores agrupados por su país de origen, y dentro de cada grupo, el jugador con el salario más bajo y alto")
-    println(salarioPromedioPaisEstadisticas(jugadores))
-
-
-}
-
-
 
 
 fun salarioPromedio(jugadores:List<Jugadores>): String {
