@@ -6,11 +6,11 @@ import models.Posicion
 import services.PersonaServiceImplementation
 import java.time.LocalDate
 
-fun PersonaServiceImplementation.consultas(){
-    logger.debug{}
-    val lista=repositorio.getAll()
-    val jugadores= lista.filter { it is Jugadores }.map { it  as Jugadores}.toList()
-    val entrenadores= lista.filter { it is Entrenadores }.map { it as Entrenadores }.toList()
+fun PersonaServiceImplementation.consultas() {
+    logger.debug {}
+    val lista = repositorio.getAll()
+    val jugadores = lista.filter { it is Jugadores }.map { it as Jugadores }.toList()
+    val entrenadores = lista.filter { it is Entrenadores }.map { it as Entrenadores }.toList()
 
     /**
      * Realizar las consultas
@@ -36,12 +36,14 @@ fun PersonaServiceImplementation.consultas(){
     println("7. Promedio de altura de los jugadores agrupados por posición")
     jugadores.groupBy { it.posicion }.forEach { (posicion, lista) ->
         val promedioAltura = lista.map { it.altura }.average()
-    println("$posicion: $promedioAltura") }
+        println("$posicion: $promedioAltura")
+    }
 
     println("8. Listado de todos los jugadores que han anotado más de 10 goles")
     println(jugadores.filter { it.goles > 10 })
 
-
+    println("9. Jugadores con un salario mayor al promedio del equipo")
+    println(salarioPromedio(jugadores))
 
     println("10. Número total de partidos jugados por todos los jugadores")
     println(jugadores.sumOf { it.partidosJugados })
@@ -58,7 +60,8 @@ fun PersonaServiceImplementation.consultas(){
     println("14. Promedio de peso de los jugadores por posición")
     jugadores.groupBy { it.posicion }.forEach { (posicion, lista) ->
         val promedioPeso = lista.map { it.peso }.average()
-        println("$posicion: $promedioPeso")}
+        println("$posicion: $promedioPeso")
+    }
 
     println("15. Listado de todos los jugadores que tienen un dorsal par")
     println(jugadores.filter { it.dorsal.toInt() % 2 == 0 }.map { it.nombre + " " + it.apellidos })
@@ -67,17 +70,22 @@ fun PersonaServiceImplementation.consultas(){
     println(jugadores.filter { it.partidosJugados < 5 })
 
     println("17. Media de goles por partido de cada jugador:")
-    jugadores.filter { it.partidosJugados > 0 }.map { it.nombre to it.goles.toDouble() / it.partidosJugados }.forEach { (nombre, media) ->
-    println("$nombre: $media goles por partido")}
+    jugadores.filter { it.partidosJugados > 0 }.map { it.nombre to it.goles.toDouble() / it.partidosJugados }
+        .forEach { (nombre, media) ->
+            println("$nombre: $media goles por partido")
+        }
 
-
+    println("18. Listado de jugadores que tienen una altura superior a la media del equipo")
+    println(listadoJugadoresAlturaSuperiorMedia(jugadores))
 
     println("19. Entrenadores que se incorporaron al club en los últimos 5 años")
-    println(entrenadores.filter { (LocalDate.now().year - it.fechaIncorporacion!!.year) <=5 })
+    println(entrenadores.filter { (LocalDate.now().year - it.fechaIncorporacion!!.year) <= 5 })
 
+    println("20. Jugadores que han anotado más goles que el promedio de su posición")
+    println(jugadoresSobrePromedio(jugadores))
 
-
-
+    println("21. Por posición, máximo de goles, mínimo de goles y media")
+    println(golesPorPosicion(jugadores))
 
     println("22. Estimación del coste total de la plantilla")
     println(lista.sumOf { it.salario.toDouble() })
@@ -89,14 +97,20 @@ fun PersonaServiceImplementation.consultas(){
     println("24. Jugadores agrupados por país y, dentro de cada grupo, el jugador con más partidos jugados")
     println(jugadores.groupBy { it.pais }.mapValues { (_, jugadores) -> jugadores.maxByOrNull { it.partidosJugados } })
 
-
+    println("25. Promedio de goles por posición, y dentro de cada posición, el jugador con el mayor número de goles")
+    promedioGolesMaxGoleador(jugadores)
 
     println("26. Entrenadores agrupados por especialidad, y dentro de cada especialidad, el entrenador con el salario más alto")
     println(entrenadores.groupBy { it.especialidad }
         .mapValues { (_, entrenadores) -> entrenadores.maxByOrNull { it.salario.toDouble() } })
 
+    println("27. Jugadores agrupados por década de nacimiento, y dentro de cada grupo, el promedio de partidos jugados")
+    println(jugadoresPorDecada(jugadores))
 
+    println("28. Salario promedio de los jugadores agrupados por su país de origen, y dentro de cada grupo, el jugador con el salario más bajo y alto")
+    println(salarioPromedioPaisEstadisticas(jugadores))
 
+}
 fun salarioPromedio(jugadores:List<Jugadores>): String {
     val salarioPromedio = jugadores.map { it.salario }.average()
     return jugadores.filter { it.salario > salarioPromedio}.toString() }
@@ -147,4 +161,4 @@ fun promedioGolesMaxGoleador(jugadores:List<Jugadores>) {
         val (promedio, maxGoleador) = datos
         println("$posicion -> Promedio de goles: $promedio, Jugador con más goles: ${maxGoleador?.nombre} (${maxGoleador?.goles})")
     }
-}}
+}
