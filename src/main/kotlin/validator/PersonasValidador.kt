@@ -19,18 +19,13 @@ fun Persona.validador() {
     if (nombre.length <= 2){
         throw PersonasException.PersonasInvalidoException("nombre invalido, demasiado corto")
     }
-    if(nombre.contains(numeros)){
-        throw PersonasException.PersonasInvalidoException("el nombre no pueden contener numeros")
-    }
-    if(apellidos.isBlank()){
+        if(apellidos.isBlank()){
         throw PersonasException.PersonasInvalidoException("los apellidos están en blanco")
     }
     if (apellidos.length <= 2){
         throw PersonasException.PersonasInvalidoException("apellidos inválidos, demasiado cortos")
     }
-    if(apellidos.contains(numeros)){
-        throw PersonasException.PersonasInvalidoException("los apellidos no pueden contener números")
-    }
+
     if (salario<=0){
         throw PersonasException.PersonasInvalidoException("salario invalido, salario negativo o igual a 0")
     }
