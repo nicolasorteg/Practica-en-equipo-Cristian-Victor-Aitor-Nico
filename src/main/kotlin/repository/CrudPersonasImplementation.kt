@@ -43,6 +43,7 @@ class CrudPersonasImplementation:CrudPersonas {
         } else {
             entrenadorCopy(objeto as Entrenadores, id)
         }
+        if (personas[id]==null) return null
         personas[id] = personaNueva
         return personas[id]
     }

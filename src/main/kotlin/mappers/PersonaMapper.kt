@@ -63,8 +63,8 @@ class PersonaMapper {
             id = jugadorDto.id,
             nombre = jugadorDto.nombre,
             apellidos = jugadorDto.apellidos,
-            fechaNacimiento = jugadorDto.fechaNacimiento.toLocalDate() ?: run { throw PersonasException.PersonaInvalidoException("formato fecha invalido o incorrecto")},
-            fechaIncorporacion = jugadorDto.fechaIncorporacion.toLocalDate() ?: run { throw PersonasException.PersonaInvalidoException("formato fecha invalido o incorrecto")},
+            fechaNacimiento = jugadorDto.fechaNacimiento.toLocalDate() ?: run { throw PersonasException.PersonasInvalidoException("formato fecha invalido o incorrecto")},
+            fechaIncorporacion = jugadorDto.fechaIncorporacion.toLocalDate() ?: run { throw PersonasException.PersonasInvalidoException("formato fecha invalido o incorrecto")},
             salario = jugadorDto.salario,
             pais = jugadorDto.pais,
             posicion = jugadorDto.posicion.toPosicion()!!, // Convertimos el String a enum
@@ -83,8 +83,8 @@ class PersonaMapper {
             id = entrenadorDto.id,
             nombre = entrenadorDto.nombre,
             apellidos = entrenadorDto.apellidos,
-            fechaNacimiento = entrenadorDto.fechaNacimiento.toLocalDate() ?: run { throw PersonasException.PersonaInvalidoException("formato fecha invalido o incorrecto")},
-            fechaIncorporacion = entrenadorDto.fechaIncorporacion.toLocalDate() ?: run { throw PersonasException.PersonaInvalidoException("formato fecha invalido o incorrecto")},
+            fechaNacimiento = entrenadorDto.fechaNacimiento.toLocalDate() ?: run { throw PersonasException.PersonasInvalidoException("formato fecha invalido o incorrecto")},
+            fechaIncorporacion = entrenadorDto.fechaIncorporacion.toLocalDate() ?: run { throw PersonasException.PersonasInvalidoException("formato fecha invalido o incorrecto")},
             salario = entrenadorDto.salario,
             pais = entrenadorDto.pais
         )
