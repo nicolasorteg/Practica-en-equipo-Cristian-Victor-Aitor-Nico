@@ -22,6 +22,10 @@ Hay un menú con las siguientes opciones
 
 Además, en el servicio se incluyen utils ejemplificativas para revisar que los datos se hayan tratado correctamente.
 
+DOCUMENTACION
+
+[Documentación.pdf](https://github.com/user-attachments/files/19163569/Documentacion.pdf)
+
 
 
 

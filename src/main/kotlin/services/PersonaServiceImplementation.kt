@@ -6,6 +6,7 @@ import exception.PersonasException
 import models.Persona
 import org.lighthousegames.logging.logging
 import repository.CrudPersonasImplementation
+import storage.PersonalStorageBin
 import storage.PersonalStorageCsv
 import storage.PersonalStorageJson
 import storage.PersonalStorageXml
@@ -21,6 +22,7 @@ class PersonaServiceImplementation(
     private val storageJson: PersonalStorageJson = PersonalStorageJson()
     private val storageCsv: PersonalStorageCsv = PersonalStorageCsv()
     private val storageXml: PersonalStorageXml = PersonalStorageXml()
+    private val storageBin: PersonalStorageBin = PersonalStorageBin()
     internal val logger= logging()
     override fun getAll(): List<Persona> {
         logger.info { "pasando a repositorio" }
@@ -74,6 +76,10 @@ class PersonaServiceImplementation(
                 lista.forEach{repositorio.save(it)}
 
             }
+            "bin"->{
+                val lista=storageBin.leerDelArchivo(fichero.toFile())
+                lista.forEach{repositorio.save(it)}
+            }
         }
     }
 
@@ -84,7 +90,7 @@ class PersonaServiceImplementation(
             Tipo.CSV-> storageCsv.escribirAUnArchivo(fichero.toFile(),repositorio.getAll())
             Tipo.JSON-> storageJson.escribirAUnArchivo(fichero.toFile(),repositorio.getAll())
             Tipo.XML -> storageXml.writeToFile(repositorio.getAll(),fichero.toFile())
-            Tipo.BINARIO -> TODO()
+            Tipo.BINARIO -> storageBin.escribirAUnArchivo(fichero.toFile(),repositorio.getAll())
         }
     }
 

@@ -28,7 +28,7 @@ class PersonalStorageJson : PersonalStorage {
      *
      * @param file Este es el archivo JSON desde el cual se leen los datos.
      * @return Devuelve la lista de personas leídas del archivo.
-     * @throws PersonasStorageException Si el archivo no existe, no se puede leer, o tiene un formato incorrecto.
+     * @throws PersonasException.PersonasStorageException Si el archivo no existe, no se puede leer, o tiene un formato incorrecto.
      */
     override fun leerDelArchivo (file:File): List<Persona> {
         // Mensaje de debug para la lectura del archivo
@@ -37,7 +37,7 @@ class PersonalStorageJson : PersonalStorage {
         // verificación de que el archivo sea válido antes de intentar leerlo
         if (!file.exists() || !file.isFile || !file.canRead() || file.length() == 0L || !file.name.endsWith(".json")) {
             logger.error { "El fichero no existe, o no es un fichero o no se puede leer: $file" }
-            throw PersonasException.PersonasStorageExcepcion("El fichero no existe, o no es un fichero o no se puede leer: $file")
+            throw PersonasException.PersonasStorageException("El fichero no existe, o no es un fichero o no se puede leer: $file")
         }
 
         // lectura el contenido del archivo JSON
@@ -104,8 +104,8 @@ class PersonalStorageJson : PersonalStorage {
      * Se encarga de escribir una lista de personas en un archivo JSON.
      *
      * @param file El archivo JSON donde escribir los datos.
-     * @param personas La lista de personas a escribir en el archivo.
-     * @throws PersonasStorageExcepcion Si el archivo no es válido o no se puede escribir.
+     * @param persona La lista de personas a escribir en el archivo.
+     * @throws PersonasException.PersonasStorageException Si el archivo no es válido o no se puede escribir.
      */
     override fun escribirAUnArchivo (file: File, persona: List<Persona>) {
         // mensaje de debug para la escritura del archivo
@@ -114,7 +114,7 @@ class PersonalStorageJson : PersonalStorage {
         // verificación de que el directorio del archivo existe y es válido
         if (!file.parentFile.exists() || !file.parentFile.isDirectory || !file.name.endsWith(".json")) {
             logger.error { "El directorio padre del fichero no existe: ${file.parentFile.absolutePath}" }
-            throw PersonasException.PersonasStorageExcepcion("El directorio padre del fichero no existe: ${file.parentFile.absolutePath}")
+            throw PersonasException.PersonasStorageException("El directorio padre del fichero no existe: ${file.parentFile.absolutePath}")
         }
 
         // creación del JSON manualmente como String
