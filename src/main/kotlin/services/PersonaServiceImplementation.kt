@@ -72,7 +72,7 @@ class PersonaServiceImplementation(
                 lista.forEach{repositorio.save(it)}
             }
             "xml"->{
-                val lista=storageXml.readFromFile(fichero.toFile())
+                val lista=storageXml.leerDelArchivo(fichero.toFile())
                 lista.forEach{repositorio.save(it)}
 
             }
@@ -89,7 +89,7 @@ class PersonaServiceImplementation(
         when(tipo){
             Tipo.CSV-> storageCsv.escribirAUnArchivo(fichero.toFile(),repositorio.getAll())
             Tipo.JSON-> storageJson.escribirAUnArchivo(fichero.toFile(),repositorio.getAll())
-            Tipo.XML -> storageXml.writeToFile(repositorio.getAll(),fichero.toFile())
+            Tipo.XML -> storageXml.escribirAUnArchivo(fichero.toFile(),repositorio.getAll())
             Tipo.BINARIO -> storageBin.escribirAUnArchivo(fichero.toFile(),repositorio.getAll())
         }
     }
