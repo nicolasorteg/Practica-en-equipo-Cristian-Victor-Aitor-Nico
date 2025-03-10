@@ -18,7 +18,7 @@ import java.io.File
 /**
  * Esta es la implementación de la interfaz PersonalStorage.kt para leer y escribir datos de un listado de personas en formato XML.
  */
-class PersonalStorageXml {
+class PersonalStorageXml: PersonalStorage {
 
     private val logger = logging()
     private val personaMapper = PersonaMapper() 
@@ -30,7 +30,7 @@ class PersonalStorageXml {
      * @return Lista de personas (Jugadores o Entrenadores).
      * @throws PersonasException.PersonasStorageException Si el archivo no existe, no es un archivo o no se puede leer.
      */
-    fun readFromFile(file: File): List<Persona> {
+    override fun leerDelArchivo(file: File): List<Persona> {
         logger.debug { "Leyendo personas de fichero XML: $file" }
 
         // condicional para verificar que el archivo sea válido
@@ -86,7 +86,7 @@ class PersonalStorageXml {
      * @param file El archivo XML donde se guardarán las personas.
      * @throws PersonasException.PersonasStorageException Si el directorio no existe o no es válido.
      */
-    fun writeToFile(personas: List<Persona>, file: File) {
+    override fun escribirAUnArchivo(file: File, persona: List<Persona>) {
         logger.debug { "Escribiendo personas en fichero XML: $file" }
 
         // condicional para verificar que el archivo sea válido
