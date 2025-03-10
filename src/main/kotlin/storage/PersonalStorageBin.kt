@@ -41,7 +41,7 @@ class PersonalStorageBin : PersonalStorage {
 
         RandomAccessFile(file, "r").use { raf ->
             while (raf.filePointer < raf.length()) {
-                val tipo = raf.readUTF() // Lee el tipo de persona (Jugador o Entrenador)
+                val rol = raf.readUTF() // Lee el tipo de persona (Jugador o Entrenador)
                 val id = raf.readLong() // Lee el id
                 val nombre = raf.readUTF() // Lee el nombre
                 val apellidos = raf.readUTF() // Lee los apellidos
@@ -50,7 +50,7 @@ class PersonalStorageBin : PersonalStorage {
                 val salario = raf.readDouble() // Lee el salario
                 val pais = raf.readUTF() // Lee el país de origen
 
-                if (tipo == "Jugador") {
+                if (rol == "Jugador") {
                     val posicion = raf.readUTF() // Lee la posición
                     val dorsal = raf.readInt() // Lee el dorsal
                     val altura = raf.readDouble() // Lee la altura
@@ -63,7 +63,7 @@ class PersonalStorageBin : PersonalStorage {
                         posicion, dorsal, altura, peso, goles, partidosJugados
                     )
                     personal.add(jugador.toModel())
-                } else if (tipo == "Entrenador") {
+                } else if (rol == "Entrenador") {
                     val especialidad = raf.readUTF() // Lee la especialidad
 
                     val entrenador = EntrenadorDto(
