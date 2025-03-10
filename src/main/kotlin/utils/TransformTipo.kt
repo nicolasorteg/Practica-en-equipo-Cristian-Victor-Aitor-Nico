@@ -14,11 +14,11 @@ fun String.toTipo(): Tipo {
     }
 }
 
-fun Tipo.toString():String{
+fun Tipo.toStringFile():String{
     return when(this){
         Tipo.CSV -> "CSV"
         Tipo.JSON -> "JSON"
-        Tipo.BINARIO -> "BINARIO"
+        Tipo.BINARIO -> "BIN"
         Tipo.XML -> "XML"
     }
 }

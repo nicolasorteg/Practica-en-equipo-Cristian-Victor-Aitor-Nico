@@ -32,7 +32,7 @@ class PersonalStorageXml {
      * Lee las personas desde un archivo XML.
      * @param file El archivo XML desde el que se leerán las personas.
      * @return Lista de personas (Jugadores o Entrenadores).
-     * @throws PersonasException.PersonasStorageExcepcion Si el archivo no existe, no es un archivo o no se puede leer.
+     * @throws PersonasException.PersonasStorageException Si el archivo no existe, no es un archivo o no se puede leer.
      */
     fun readFromFile(file: File): List<Persona> {
         logger.debug { "Leyendo personas de fichero XML: $file" }
@@ -88,7 +88,7 @@ class PersonalStorageXml {
      * Escribe las personas en un archivo XML.
      * @param personas La lista de personas (Jugadores o Entrenadores) que se escribirán.
      * @param file El archivo XML donde se guardarán las personas.
-     * @throws PersonasException.PersonasStorageExcepcion Si el directorio no existe o no es válido.
+     * @throws PersonasException.PersonasStorageException Si el directorio no existe o no es válido.
      */
     fun writeToFile(personas: List<Persona>, file: File) {
         logger.debug { "Escribiendo personas en fichero XML: $file" }

@@ -1,6 +1,5 @@
 package cache
 
-import models.Persona
 import org.lighthousegames.logging.logging
 import java.util.concurrent.ConcurrentHashMap
 

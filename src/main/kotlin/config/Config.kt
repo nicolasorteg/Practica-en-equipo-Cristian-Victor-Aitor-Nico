@@ -41,7 +41,8 @@ object Config {
     }
     private fun crearArchivo(backupDir: String,tipoFile: File){
         logger.info { "creando archivo si no existe" }
-        val archivo=java.io.File(backupDir,"personal"+ tipoFile.toString().lowercase(Locale.getDefault()))
+        val archivo=java.io.File(backupDir,"personal."+ tipoFile.toString().lowercase(Locale.getDefault()))
+
     }
 
     private fun crearDirectorios(dataDir: String, backupDir: String) {
