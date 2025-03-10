@@ -61,7 +61,7 @@ class ViewService{
         val productoFile= Path.of(configuracion.dataDir,configuracion.file)
         try {
             controller.importarDatosDesdeFichero(productoFile)
-        }catch (e:PersonasException.PersonasStorageExcepcion){println(e.message)}
+        }catch (e:PersonasException.PersonasStorageException){println(e.message)}
     }
 
     /**
@@ -315,7 +315,7 @@ class ViewService{
             .lowercase(Locale.getDefault())}")
         try {
             controller.exportarDatosDesdeFichero(exportFile,configuracion.tipo)
-        }catch (e:PersonasException.PersonasStorageExcepcion){println(e.message)}
+        }catch (e:PersonasException.PersonasStorageException){println(e.message)}
     }
 
     private fun realizarConsultas(){

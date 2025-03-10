@@ -3,6 +3,7 @@ package storage
 import dto.EntrenadorDto
 import dto.JugadorDto
 import exception.PersonasException
+import mappers.PersonaMapper
 import models.Entrenadores
 import models.Jugadores
 import models.Persona
@@ -19,6 +20,7 @@ import java.util.*
 
 class PersonalStorageBin : PersonalStorage {
     private val logger = logging()
+    private val personalMapper = PersonaMapper()
 
     init {
         logger.debug { "Inicializando almacenamiento de personal en Bin" }
@@ -58,18 +60,18 @@ class PersonalStorageBin : PersonalStorage {
                     val goles = raf.readInt() // Lee los goles
                     val partidosJugados = raf.readInt() // Lee los partidos jugados
 
-                    val jugador = JugadorDto(
+                    val jugadorDto = JugadorDto(
                         id, nombre, apellidos, fechaNacimiento, fechaIncorporacion, salario, pais,
                         posicion, dorsal, altura, peso, goles, partidosJugados
                     )
-                    personal.add(jugador.toModel())
+                    personal.add(personalMapper.toModel(jugadorDto))
                 } else if (tipo == "Entrenador") {
                     val especialidad = raf.readUTF() // Lee la especialidad
 
-                    val entrenador = EntrenadorDto(
+                    val entrenadorDto = EntrenadorDto(
                         id, nombre, apellidos, fechaNacimiento, fechaIncorporacion, salario, pais, especialidad
                     )
-                    personal.add(entrenador.toModel())
+                    personal.add(personalMapper.toModel(entrenadorDto))
                 }
             }
         }
@@ -98,8 +100,8 @@ class PersonalStorageBin : PersonalStorage {
                         raf.writeLong(personal.id)
                         raf.writeUTF(personal.nombre)
                         raf.writeUTF(personal.apellidos)
-                        raf.writeUTF(personal.fechaNacimiento)
-                        raf.writeUTF(personal.fechaIncorporacion)
+                        raf.writeUTF(personal.fechaNacimiento.toString())
+                        raf.writeUTF(personal.fechaIncorporacion.toString())
                         raf.writeDouble(personal.salario)
                         raf.writeUTF(personal.pais)
                         raf.writeUTF(personal.posicion.name)
@@ -114,8 +116,8 @@ class PersonalStorageBin : PersonalStorage {
                         raf.writeLong(personal.id)
                         raf.writeUTF(personal.nombre)
                         raf.writeUTF(personal.apellidos)
-                        raf.writeUTF(personal.fechaNacimiento)
-                        raf.writeUTF(personal.fechaIncorporacion)
+                        raf.writeUTF(personal.fechaNacimiento.toString())
+                        raf.writeUTF(personal.fechaIncorporacion.toString())
                         raf.writeDouble(personal.salario)
                         raf.writeUTF(personal.pais)
                         raf.writeUTF(personal.especialidad.name)
