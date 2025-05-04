@@ -17,5 +17,6 @@ CREATE TABLE personal(
 );
 CREATE TABLE users(
     nombre_usuario VARCHAR PRIMARY KEY NOT NULL,
-    contraseña VARCHAR NOT NULL
+    contraseña VARCHAR NOT NULL,
+    admin BOOLEAN NOT NULL DEFAULT FALSE
 );

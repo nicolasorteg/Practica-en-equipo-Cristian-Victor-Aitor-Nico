@@ -8,12 +8,14 @@ class UsersMappper {
         return UsersEntity(
             name = user.name,
             password = user.password,
+            admin = user.admin,
         )
     }
     fun toModel(user:UsersEntity): User {
         return User(
             name = user.name,
             password = user.password,
+            admin = user.admin,
         )
     }
 }

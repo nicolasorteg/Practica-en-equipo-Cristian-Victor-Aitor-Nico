@@ -17,9 +17,9 @@ interface UsersDao {
     fun getAll(): List<UsersEntity>
     @SqlQuery("select * from users where nombre_usuario = :name")
     fun getByName(@Bind("name") name: String): UsersEntity?
-    @SqlUpdate("INSERT INTO users (nombre_usuario,contraseña) VALUES (:name, :password))")
+    @SqlUpdate("INSERT INTO users (nombre_usuario,contraseña,admin) VALUES (:name, :password,:admin))")
     fun save(@BindBean user: UsersEntity): Int
-    @SqlUpdate("UPDATE users SET contraseña = :password WHERE nombre_usuario = :name")
+    @SqlUpdate("UPDATE users SET contraseña = :password, admin= :admin WHERE nombre_usuario = :name,")
     fun update(@BindBean user: UsersEntity,@Bind("name")name: String): Int
     @SqlUpdate("DELETE FROM users WHERE nombre_usuario = :name")
     fun delete(@Bind("name") name: String): Int
