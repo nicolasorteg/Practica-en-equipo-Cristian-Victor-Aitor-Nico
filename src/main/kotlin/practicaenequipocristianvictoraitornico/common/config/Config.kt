@@ -1,4 +1,4 @@
-package practicaenequipocristianvictoraitornico.players.config
+package practicaenequipocristianvictoraitornico.common.config
 
 import org.lighthousegames.logging.logging
 import java.io.FileNotFoundException
@@ -7,10 +7,11 @@ import java.util.*
 object Config {
     private val logger= logging()
     val configProperties: ConfiguracionProperties by lazy {
+        logger.debug { "creando config.properties" }
         loadConfig()
     }
 
-    private fun loadConfig():ConfiguracionProperties {
+    private fun loadConfig(): ConfiguracionProperties {
         logger.debug { "cargando propiedades" }
         val properties = Properties()
         //busca el archivo de propiedades si no lo encuentra lanza una excepción
