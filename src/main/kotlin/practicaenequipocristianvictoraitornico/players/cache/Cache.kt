@@ -3,7 +3,7 @@ package practicaenequipocristianvictoraitornico.players.cache
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
 import org.lighthousegames.logging.logging
-import practicaenequipocristianvictoraitornico.players.config.Config
+import practicaenequipocristianvictoraitornico.common.config.Config
 import practicaenequipocristianvictoraitornico.players.models.Persona
 
 fun darPersonasCache(
