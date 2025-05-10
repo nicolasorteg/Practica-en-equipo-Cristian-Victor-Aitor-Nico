@@ -8,6 +8,7 @@ module org.example.practicaenequipocristianvictoraitornico {
     requires com.github.benmanes.caffeine;
     requires org.jdbi.v3.sqlobject;
     requires org.jdbi.v3.core;
+    requires open;
 
 
     opens practicaenequipocristianvictoraitornico to javafx.fxml;
