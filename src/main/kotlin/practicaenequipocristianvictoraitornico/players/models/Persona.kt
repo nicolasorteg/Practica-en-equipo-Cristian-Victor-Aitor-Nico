@@ -13,5 +13,4 @@ abstract class Persona(
     val pais:String,
 
     ){
-    internal val logger= logging()
 }
