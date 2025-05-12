@@ -1,8 +1,0 @@
-package practicaenequipocristianvictoraitornico.users.service
-
-import practicaenequipocristianvictoraitornico.common.service.Service
-import practicaenequipocristianvictoraitornico.users.exception.UsersException
-import practicaenequipocristianvictoraitornico.users.models.User
-
-interface UsersService:Service<User, UsersException,String> {
-}
