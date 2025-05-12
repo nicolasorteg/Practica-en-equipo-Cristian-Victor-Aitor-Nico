@@ -17,4 +17,5 @@ module org.example.practicaenequipocristianvictoraitornico {
 
     opens practicaenequipocristianvictoraitornico to javafx.fxml;
     exports practicaenequipocristianvictoraitornico;
+
 }
