@@ -67,6 +67,8 @@ dependencies {
     implementation("com.github.ben-manes.caffeine:caffeine:3.2.0")
     //Result exeptions
     implementation("com.michael-bull.kotlin-result:kotlin-result:2.0.0")
+    // Open Brwoser
+    implementation("com.vaadin:open:8.5.0")
 }
 
 test {

@@ -1,5 +1,6 @@
 package practicaenequipocristianvictoraitornico.players.models
 
+import javafx.scene.image.ImageView
 import java.time.LocalDate
 
 class Jugadores(
@@ -15,7 +16,8 @@ class Jugadores(
     val altura:Double,
     val peso:Double,
     val goles:Int,
-    val partidosJugados:Int
+    val partidosJugados:Int,
+    val imagen: String
 ):Persona(id, nombre, apellidos, fechaNacimiento, fechaIncorporacion, salario, pais){
     override fun toString(): String {
         return "id: $id,nombre: $nombre,apellidos: $apellidos,fecha_nacimiento: $fechaNacimiento," +
