@@ -27,7 +27,7 @@
                <graphic>
                   <ImageView fitHeight="10.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../icons/4115235-exit-logout-sign-out_114030%20(1).png" />
+                        <Image url="@../icons/4115235-exit-logout-sign-out_114030 (1).png" />
                      </image></ImageView>
                </graphic>
                 </Button>
