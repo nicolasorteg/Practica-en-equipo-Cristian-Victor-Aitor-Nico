@@ -4,6 +4,7 @@ import com.github.michaelbull.result.Result
 import practicaenequipocristianvictoraitornico.common.service.Service
 import practicaenequipocristianvictoraitornico.players.exception.PersonasException
 import practicaenequipocristianvictoraitornico.players.models.Persona
+import practicaenequipocristianvictoraitornico.players.storage.Tipo
 import java.nio.file.Path
 
 interface PersonaService: Service<Persona, PersonasException, Long> {
