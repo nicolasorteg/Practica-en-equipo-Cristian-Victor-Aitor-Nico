@@ -29,7 +29,7 @@ tasks.withType(JavaCompile) {
 
 application {
     mainModule = 'practicaenequipocristianvictoraitornico'
-    mainClass = 'practicaenequipocristianvictoraitornico.PersonalApplication'
+    mainClass = 'practicaenequipocristianvictoraitornico.main.kt'
 }
 kotlin {
     jvmToolchain(21)
@@ -69,6 +69,8 @@ dependencies {
     implementation("com.michael-bull.kotlin-result:kotlin-result:2.0.0")
     // Open Brwoser
     implementation("com.vaadin:open:8.5.0")
+    //BCrypt
+    implementation("org.mindrot:jbcrypt:0.4")
 }
 
 test {

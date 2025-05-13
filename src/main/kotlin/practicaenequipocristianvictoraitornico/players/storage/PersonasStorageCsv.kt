@@ -70,7 +70,8 @@ class PersonalStorageCsv: PersonalStorage {
                         altura = it[11].toDouble(),
                         peso = it[12].toDouble(),
                         goles = it[13].toInt(),
-                        partidosJugados = it[14].toInt()
+                        partidosJugados = it[14].toInt(),
+                        imagen = it[15].toString()
                     )
                     else -> return Err(PersonasException.PersonasStorageException("Rol desconocido en el CSV: $rol"))
                 }

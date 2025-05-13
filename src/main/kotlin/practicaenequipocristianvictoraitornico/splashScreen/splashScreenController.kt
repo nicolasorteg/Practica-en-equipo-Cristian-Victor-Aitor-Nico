@@ -7,7 +7,7 @@ import javafx.scene.Scene
 import javafx.stage.Stage
 import javafx.util.Duration
 
-class SplashScreen : Application() {
+class SplashScreenController : Application() {
     override fun start(primaryStage: Stage) {
         val loader = FXMLLoader(javaClass.getResource("/splashScreen-view.fxml"))
         val scene = Scene(loader.load())

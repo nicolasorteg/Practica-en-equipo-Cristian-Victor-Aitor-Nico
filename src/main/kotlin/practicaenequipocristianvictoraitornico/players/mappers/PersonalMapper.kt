@@ -43,7 +43,8 @@ class PersonaMapper {
             altura = jugador.altura,
             peso = jugador.peso,
             goles = jugador.goles,
-            partidosJugados = jugador.partidosJugados
+            partidosJugados = jugador.partidosJugados,
+            imagen = jugador.imagen,
         )
     }
 
@@ -67,8 +68,8 @@ class PersonaMapper {
             id = jugadorDto.id,
             nombre = jugadorDto.nombre,
             apellidos = jugadorDto.apellidos,
-            fechaNacimiento = jugadorDto.fechaNacimiento.toLocalDate() !!,
-            fechaIncorporacion = jugadorDto.fechaIncorporacion.toLocalDate() !!,
+            fechaNacimiento = jugadorDto.fechaNacimiento.toLocalDate()!!,
+            fechaIncorporacion = jugadorDto.fechaIncorporacion.toLocalDate()!!,
             salario = jugadorDto.salario,
             pais = jugadorDto.pais,
             posicion = jugadorDto.posicion.toPosicion()!!, // Convertimos el String a enum
@@ -76,7 +77,8 @@ class PersonaMapper {
             altura = jugadorDto.altura,
             peso = jugadorDto.peso,
             goles = jugadorDto.goles,
-            partidosJugados = jugadorDto.partidosJugados
+            partidosJugados = jugadorDto.partidosJugados,
+            imagen = jugadorDto.imagen
         )
     }
 
@@ -108,7 +110,8 @@ class PersonaMapper {
             altura = persona.altura!!,
             peso = persona.peso!!,
             goles = persona.goles!!,
-            partidosJugados = persona.partidosJugados!!
+            partidosJugados = persona.partidosJugados!!,
+            imagen = persona.imagen
         )
     }
 
@@ -135,7 +138,7 @@ class PersonaMapper {
 
     private fun jugadorToEntity(persona: Jugadores): PersonaEntity {
         return PersonaEntity(
-            id=persona.id.toInt(),
+            id = persona.id.toInt(),
             tipo = "Jugador",
             nombre = persona.nombre,
             apellidos = persona.apellidos,
@@ -148,7 +151,9 @@ class PersonaMapper {
             altura = persona.altura,
             peso = persona.peso,
             goles = persona.goles,
-            partidosJugados = persona.partidosJugados
+            partidosJugados = persona.partidosJugados,
+            especialidad = TODO(),
+            imagen = persona.imagen
         )
     }
 
@@ -172,6 +177,13 @@ class PersonaMapper {
             salario = persona.salario,
             pais = persona.pais,
             tipo = "Entrenador",
+            posicion = TODO(),
+            dorsal = TODO(),
+            altura = TODO(),
+            peso = TODO(),
+            goles = TODO(),
+            partidosJugados = TODO(),
+            imagen = TODO(),
         )
     }
 }

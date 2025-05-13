@@ -63,7 +63,8 @@ class PersonalStorageBin : PersonalStorage {
 
                     val jugadorDto = JugadorDto(
                         id, nombre, apellidos, fechaNacimiento, fechaIncorporacion, salario, pais,
-                        posicion, dorsal, altura, peso, goles, partidosJugados
+                        posicion, dorsal, altura, peso, goles, partidosJugados,
+                        imagen = TODO(),
                     )
                     personal.add(personalMapper.toModel(jugadorDto))
                 } else if (rol == "Entrenador") {

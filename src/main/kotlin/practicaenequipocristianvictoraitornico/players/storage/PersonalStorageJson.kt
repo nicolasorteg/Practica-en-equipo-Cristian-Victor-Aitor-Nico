@@ -61,11 +61,12 @@ class PersonalStorageJson : PersonalStorage {
                             salario = it.salario,
                             pais = it.pais,
                             posicion = it.posicion.toString(),
-                            dorsal = it.dorsal?.toInt() ?: 0 ,
+                            dorsal = it.dorsal?.toInt() ?: 0,
                             altura = it.altura?.toDouble() ?: 0.0,
                             peso = it.peso?.toDouble() ?: 0.0,
                             goles = it.goles?.toInt() ?: 0,
                             partidosJugados = it.partidosJugados?.toInt() ?: 0,
+                            imagen = TODO(),
                         )
                     )
                 }
