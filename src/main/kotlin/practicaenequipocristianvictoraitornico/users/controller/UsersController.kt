@@ -1,13 +1,19 @@
 package practicaenequipocristianvictoraitornico.users.controller
 
+import com.github.michaelbull.result.Err
 import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
+import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.control.Label
 import javafx.scene.control.PasswordField
 import javafx.scene.control.TextField
+import javafx.scene.image.Image
+import javafx.stage.Stage
 import org.lighthousegames.logging.logging
 import org.mindrot.jbcrypt.BCrypt
-import practicaenequipocristianvictoraitornico.users.exception.UsersException
+
+val logger = logging()
 
 class usersController {
     @FXML
@@ -42,6 +48,24 @@ class usersController {
             if (user != null && BCrypt.checkpw(password, user)) {
                 loginMessage.text = "Inicio de sesión exitoso"
                 loginMessage.style = "-fx-text-fill: green;"
+
+                try {
+                    val mainLoader = FXMLLoader(javaClass.getResource("/principal-view.fxml"))
+                    val mainStage = Stage()
+                    mainStage.scene = Scene(mainLoader.load())
+                    mainStage.title = "Gestor del New Team"
+                    mainStage.isResizable = false
+                    mainStage.icons.add(Image(javaClass.getResourceAsStream("/LogoSinFondo.png")))
+                    mainStage.show()
+
+                    val stage = loginMessage.scene.window as Stage
+                    stage.close()
+
+                } catch (e: Error) {
+                    loginMessage.text = "Error al cargar la vista principal"
+                    loginMessage.style = "-fx-text-fill: red;"
+                    Err("Error al cargar la vista principal")
+                }
             } else {
                 loginMessage.text = "Usuario o contraseña incorrectos"
                 loginMessage.style = "-fx-text-fill: red;"
