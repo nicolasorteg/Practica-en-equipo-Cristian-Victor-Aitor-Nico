@@ -11,6 +11,8 @@ module org.example.practicaenequipocristianvictoraitornico {
     requires open;
     requires org.jdbi.v3.kotlin;
     requires jbcrypt;
+    requires net.devrieze.xmlutil.core;
+    requires java.desktop;
 
 
     opens practicaenequipocristianvictoraitornico to javafx.fxml;
