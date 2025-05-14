@@ -122,7 +122,8 @@ class PersonasRepositoryImplementation(
             persona.altura,
             persona.peso,
             persona.goles,
-            persona.partidosJugados
+            persona.partidosJugados,
+            persona.imagen
         )
         return jugador
     }

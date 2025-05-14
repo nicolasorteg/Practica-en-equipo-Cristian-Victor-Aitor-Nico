@@ -54,20 +54,21 @@ class PersonalStorageXml: PersonalStorage {
             when (it.tipo) {
                 "Jugador" -> personaMapper.toModel(
                     JugadorDto(
-                    id = it.id.toLong(),
-                    nombre = it.nombre,
-                    apellidos = it.apellidos,
-                    fechaNacimiento = it.fechaNacimiento,
-                    fechaIncorporacion = it.fechaIncorporacion,
-                    salario = it.salario,
-                    pais = it.pais,
-                    posicion = it.posicion.toString(),
-                    dorsal = it.dorsal?.toInt() ?: 0 ,
-                    altura = it.altura?.toDouble() ?: 0.0,
-                    peso = it.peso?.toDouble() ?: 0.0,
-                    goles = it.goles?.toInt() ?: 0,
-                    partidosJugados = it.partidosJugados?.toInt() ?: 0
-                )
+                        id = it.id.toLong(),
+                        nombre = it.nombre,
+                        apellidos = it.apellidos,
+                        fechaNacimiento = it.fechaNacimiento,
+                        fechaIncorporacion = it.fechaIncorporacion,
+                        salario = it.salario,
+                        pais = it.pais,
+                        posicion = it.posicion.toString(),
+                        dorsal = it.dorsal?.toInt() ?: 0,
+                        altura = it.altura?.toDouble() ?: 0.0,
+                        peso = it.peso?.toDouble() ?: 0.0,
+                        goles = it.goles?.toInt() ?: 0,
+                        partidosJugados = it.partidosJugados?.toInt() ?: 0,
+                        imagen = TODO()
+                    )
                 )
                 "Entrenador" -> personaMapper.toModel(
                     EntrenadorDto(

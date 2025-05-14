@@ -19,4 +19,5 @@ data class PersonaEntity(
     val peso: Double?=null,
     val goles: Int?=null,
     val partidosJugados: Int?=null,
+    val imagen: String
 )

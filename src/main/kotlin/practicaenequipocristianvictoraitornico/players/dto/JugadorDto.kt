@@ -16,5 +16,6 @@ class JugadorDto(
     val altura: Double,
     val peso: Double,
     val goles: Int,
-    val partidosJugados: Int
+    val partidosJugados: Int,
+    val imagen: String
 ): PersonaDto(id, nombre, apellidos, fechaNacimiento, fechaIncorporacion, salario, pais)

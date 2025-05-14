@@ -30,19 +30,20 @@ import java.time.LocalDate
   private lateinit var repository: PersonasRepositoryImplementation
 
   private val persona= Jugadores(
-   id = 1,
-   nombre = "Jugadora",
-   apellidos = "hola",
-   fechaNacimiento = LocalDate.parse("2020-01-01"),
-   fechaIncorporacion = LocalDate.parse("2020-01-02"),
-   salario = 3000.0,
-   pais = "españa",
-   posicion = Posicion.DEFENSA,
-   dorsal = 12,
-   altura = 100.0,
-   peso = 100.0,
-   goles = 10,
-   partidosJugados = 10
+      id = 1,
+      nombre = "Jugadora",
+      apellidos = "hola",
+      fechaNacimiento = LocalDate.parse("2020-01-01"),
+      fechaIncorporacion = LocalDate.parse("2020-01-02"),
+      salario = 3000.0,
+      pais = "españa",
+      posicion = Posicion.DEFENSA,
+      dorsal = 12,
+      altura = 100.0,
+      peso = 100.0,
+      goles = 10,
+      partidosJugados = 10,
+      imagen = TODO()
   )
   private val persona2 = Entrenadores(
    id = 2,
@@ -55,31 +56,40 @@ import java.time.LocalDate
    especialidad = Especialidad.ENTRENADOR_PORTEROS
   )
   private val persona3 = PersonaEntity(
-   id = 2,
-   tipo = "Entrenadores",
-   nombre = "Entrenadora",
-   apellidos = "hola",
-   fechaNacimiento = LocalDate.parse("2020-01-01"),
-   fechaIncorporacion = LocalDate.parse("2020-01-02"),
-   salario = 3000.0,
-   pais = "españa",
-   especialidad = "ENTRENADOR_PORTEROS"
+      id = 2,
+      tipo = "Entrenadores",
+      nombre = "Entrenadora",
+      apellidos = "hola",
+      fechaNacimiento = LocalDate.parse("2020-01-01"),
+      fechaIncorporacion = LocalDate.parse("2020-01-02"),
+      salario = 3000.0,
+      pais = "españa",
+      especialidad = "ENTRENADOR_PORTEROS",
+      posicion = TODO(),
+      dorsal = TODO(),
+      altura = TODO(),
+      peso = TODO(),
+      goles = TODO(),
+      partidosJugados = TODO(),
+      imagen = TODO()
   )
   private val persona4 = PersonaEntity(
-   id = 3,
-   tipo = "Jugadores",
-   nombre = "Entrenadora",
-   apellidos = "hola",
-   fechaNacimiento = LocalDate.parse("2020-01-01"),
-   fechaIncorporacion = LocalDate.parse("2020-01-02"),
-   salario = 3000.0,
-   pais = "españa",
-   posicion = "DEFENSA",
-   dorsal = 12,
-   altura = 100.0,
-   peso = 100.0,
-   goles = 10,
-   partidosJugados = 10
+      id = 3,
+      tipo = "Jugadores",
+      nombre = "Entrenadora",
+      apellidos = "hola",
+      fechaNacimiento = LocalDate.parse("2020-01-01"),
+      fechaIncorporacion = LocalDate.parse("2020-01-02"),
+      salario = 3000.0,
+      pais = "españa",
+      posicion = "DEFENSA",
+      dorsal = 12,
+      altura = 100.0,
+      peso = 100.0,
+      goles = 10,
+      partidosJugados = 10,
+      especialidad = TODO(),
+      imagen = TODO()
   )
 
 @Test
