@@ -37,7 +37,7 @@ class tarjetasJugadoresController {
         dorsalJugadorCarta.text = jugador.dorsal.toString()
         golesJugadorCarta.text = jugador.goles.toString()
         partidosJugadorCarta.text = jugador.partidosJugados.toString()
-        imagenJugadorCarta.image = Image(javaClass.getResource(jugador.imagen).toExternalForm())
+        imagenJugadorCarta.image = Image(javaClass.getResource(jugador.imagen)?.toExternalForm())
 
         botonVolverCarta.setOnAction {
             val stage = botonVolverCarta.scene.window as Stage

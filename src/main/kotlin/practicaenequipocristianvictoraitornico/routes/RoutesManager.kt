@@ -15,7 +15,11 @@ import javafx.scene.layout.Pane
 import javafx.stage.WindowEvent
 import nl.adaptivity.xmlutil.core.impl.multiplatform.InputStream
 import org.lighthousegames.logging.logging
+import practicaenequipocristianvictoraitornico.PrincipalController
+import practicaenequipocristianvictoraitornico.acercaDe.AcrecaDeController
 import practicaenequipocristianvictoraitornico.splashScreen.SplashScreenController
+import practicaenequipocristianvictoraitornico.tarjetasJugadores.tarjetasJugadoresController
+import practicaenequipocristianvictoraitornico.users.controller.UsersController
 import java.net.URL
 
 val logger = logging()
@@ -83,6 +87,7 @@ object RoutesManager {
 
         val loader = FXMLLoader(getResource(View.USER.fxml))
         val root = loader.load<Pane>()
+        val controller = loader.getController<UsersController>()
         val scene = Scene(root)
 
         val loginStage = Stage().apply {
@@ -107,7 +112,9 @@ object RoutesManager {
         logger.debug { "Mostrando vista principal" }
 
         val loader = FXMLLoader(getResource(View.MAIN.fxml))
+        loader.setController(PrincipalController())
         val root = loader.load<Pane>()
+        val controller = loader.getController<PrincipalController>()
         val scene = Scene(root)
 
         mainStage.apply {
@@ -132,6 +139,7 @@ object RoutesManager {
 
         val loader = FXMLLoader(getResource(View.ACERCA_DE.fxml))
         val root = loader.load<Pane>()
+        val controller = loader.getController<AcrecaDeController>()
         val scene = Scene(root)
 
         Stage().apply {
@@ -153,6 +161,7 @@ object RoutesManager {
 
         val loader = FXMLLoader(getResource(View.TARJETAS_JUGADORES.fxml))
         val root = loader.load<Pane>()
+        val controller = loader.getController<tarjetasJugadoresController>()
         val scene = Scene(root)
 
         Stage().apply {

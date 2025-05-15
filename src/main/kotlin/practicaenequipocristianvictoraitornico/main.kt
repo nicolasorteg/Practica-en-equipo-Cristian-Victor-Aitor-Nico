@@ -9,7 +9,7 @@ import practicaenequipocristianvictoraitornico.splashScreen.SplashScreenControll
 
 class MainApp : Application() {
     override fun start(primaryStage: Stage) {
-        RoutesManager.initApp(this, primaryStage)
+        RoutesManager.initApp( primaryStage, this)
     }
 }
 

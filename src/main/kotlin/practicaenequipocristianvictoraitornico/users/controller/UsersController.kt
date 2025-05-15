@@ -1,21 +1,16 @@
 package practicaenequipocristianvictoraitornico.users.controller
 
-import com.github.michaelbull.result.Err
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
-import javafx.scene.Scene
-import javafx.scene.control.Button
-import javafx.scene.control.Label
-import javafx.scene.control.PasswordField
-import javafx.scene.control.TextField
-import javafx.scene.image.Image
+import javafx.scene.control.*
 import javafx.stage.Stage
 import org.lighthousegames.logging.logging
 import org.mindrot.jbcrypt.BCrypt
+import practicaenequipocristianvictoraitornico.routes.RoutesManager
 
-val logger = logging()
+class UsersController {
 
-class usersController {
+    private val logger = logging()
+
     @FXML
     private lateinit var userName: TextField
 
@@ -28,48 +23,44 @@ class usersController {
     @FXML
     private lateinit var loginMessage: Label
 
+    // Simulación de base de datos con BCrypt
     private val usersDB = mapOf(
-        "admin" to BCrypt.hashpw("contraseñasegura", BCrypt.gensalt()),
+        "admin" to BCrypt.hashpw("contraseñasegura", BCrypt.gensalt())
     )
 
+    @FXML
     fun initialize() {
         loginButton.setOnAction {
-            val userName = userName.text.trim()
-            val password = password.text
+            login()
+        }
+    }
 
-            if (userName.isBlank() || password.isBlank()) {
-                loginMessage.text = "¡¡Porfavor rellene todos los campos!!"
-                loginMessage.style = "-fx-text-fill: red;"
-                return@setOnAction
-            }
+    private fun login() {
+        val inputUser = userName.text.trim()
+        val inputPass = password.text
 
-            val user = usersDB[userName]
+        if (inputUser.isBlank() || inputPass.isBlank()) {
+            loginMessage.text = "¡¡Por favor, rellene todos los campos!!"
+            loginMessage.style = "-fx-text-fill: red;"
+            return
+        }
 
-            if (user != null && BCrypt.checkpw(password, user)) {
-                loginMessage.text = "Inicio de sesión exitoso"
-                loginMessage.style = "-fx-text-fill: green;"
+        val hashedPassword = usersDB[inputUser]
 
-                try {
-                    val mainLoader = FXMLLoader(javaClass.getResource("/principal-view.fxml"))
-                    val mainStage = Stage()
-                    mainStage.scene = Scene(mainLoader.load())
-                    mainStage.title = "Gestor del New Team"
-                    mainStage.isResizable = false
-                    mainStage.icons.add(Image(javaClass.getResourceAsStream("/LogoSinFondo.png")))
-                    mainStage.show()
+        if (hashedPassword != null && BCrypt.checkpw(inputPass, hashedPassword)) {
+            loginMessage.text = "Inicio de sesión exitoso"
+            loginMessage.style = "-fx-text-fill: green;"
+            logger.info { "Usuario $inputUser ha iniciado sesión correctamente" }
 
-                    val stage = loginMessage.scene.window as Stage
-                    stage.close()
+            // Mostramos la vista principal desde RoutesManager
+            RoutesManager.showMainView()
 
-                } catch (e: Error) {
-                    loginMessage.text = "Error al cargar la vista principal"
-                    loginMessage.style = "-fx-text-fill: red;"
-                    Err("Error al cargar la vista principal")
-                }
-            } else {
-                loginMessage.text = "Usuario o contraseña incorrectos"
-                loginMessage.style = "-fx-text-fill: red;"
-            }
+            // Cerramos la ventana actual (login)
+            (loginMessage.scene.window as Stage).close()
+        } else {
+            loginMessage.text = "Usuario o contraseña incorrectos"
+            loginMessage.style = "-fx-text-fill: red;"
+            logger.info { "Intento fallido de login para el usuario: $inputUser" }
         }
     }
 }
